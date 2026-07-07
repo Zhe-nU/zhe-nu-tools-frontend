@@ -1,5 +1,5 @@
-import { SettingsForm } from "./manage-bot/ui/settings-form"
+import { redirect } from "next/navigation"
 
 export default function Page() {
-  return <div></div>
+  redirect("/dashboard/manage-bot")
 }
