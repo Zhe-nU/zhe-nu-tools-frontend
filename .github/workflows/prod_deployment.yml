@@ -17,6 +17,8 @@ jobs:
 
       - name: Build and Deploy
         env:
-          NEXT_PUBLIC_AVITO_CLIENT_ID: ${{ vars.AVITO_CLIENT_ID }}
+          NEXT_PUBLIC_AVITO_CLIENT_ID: ${{ vars.NEXT_PUBLIC_AVITO_CLIENT_ID }}
+          NEXT_PUBLIC_API_BASE_URL: ${{ vars.NEXT_PUBLIC_API_BASE_URL }}
+          NEXT_PUBLIC_LOGIN_REDIRECT_URL: ${{ vars.NEXT_PUBLIC_LOGIN_REDIRECT_URL }}
         run: |
           docker compose -f ./.docker/docker-compose-prod.yaml up -d --build

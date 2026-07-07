@@ -43,7 +43,7 @@ export function LoginForm({
         email: value.email,
         password: value.password,
         rememberMe: true,
-        callbackURL: "http://localhost:3000",
+        callbackURL: process.env.NEXT_PUBLIC_LOGIN_REDIRECT_URL,
       })
     },
   })
