@@ -34,7 +34,7 @@ export default function Page() {
           <h1>К вашему аккаунту ещё не подключен бот</h1>
           <Button asChild>
             <Link
-              href={`https://www.avito.ru/oauth?response_type=code&client_id=${process.env.NEXT_PUBLIC_CLIENT_ID}&scope=user:read,messenger:read,messenger:write,items:info,stats:read`}
+              href={`https://www.avito.ru/oauth?response_type=code&client_id=${process.env.NEXT_PUBLIC_AVITO_CLIENT_ID}&scope=user:read,messenger:read,messenger:write,items:info,stats:read`}
             >
               Подключить бота
             </Link>

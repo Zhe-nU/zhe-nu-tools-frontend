@@ -1,0 +1,22 @@
+name: PROD
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    environment: PROD
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and Deploy
+        env:
+          NEXT_PUBLIC_AVITO_CLIENT_ID: ${{ vars.AVITO_CLIENT_ID }}
+        run: |
+          docker compose -f ./.docker/docker-compose-prod.yaml up -d --build
