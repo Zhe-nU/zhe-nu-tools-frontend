@@ -1,6 +1,10 @@
 import { client } from "@/shared/api/client"
 import { ChatType } from "../ui/settings-form"
 
+export const deleteBot = async (userId: string) => {
+  await client.delete(`/user/${userId}/bot`)
+}
+
 export const getBot = async (userId: string) => {
   const { data } = await client.get(`/user/${userId}/bot`)
   return data

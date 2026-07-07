@@ -28,8 +28,9 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 import { PlusIcon, TrashIcon } from "lucide-react"
 import { toast } from "sonner"
 import z from "zod"
-import { getBotSettings, updateBotSettings } from "../api/bot"
+import { updateBotSettings } from "../api/bot"
 import { authClient } from "@/lib/auth-client"
+import { Spinner } from "@/components/ui/spinner"
 
 const CHAT_TYPES = ["u2u", "u2i"] as const
 const WEEK_DAYS = [
@@ -46,7 +47,7 @@ export type ChatType = (typeof CHAT_TYPES)[number]
 export type WeekDay = (typeof WEEK_DAYS)[number]["value"]
 
 const formSchema = z.object({
-  answerOnFirstMessage: z.boolean(),
+  answerOnFirstMessage: z.boolean().optional(),
   chatTypes: z.set(z.enum(CHAT_TYPES)),
   isActive: z.boolean(),
   weekDayText: z.array(
@@ -64,12 +65,16 @@ export function SettingsForm({
   chatTypes,
   isActive,
   weekDayText,
+  deletingBot,
+  onDeleteBot,
   ...props
 }: {
-  answerOnFirstMessage: boolean
+  answerOnFirstMessage?: boolean
   chatTypes: Array<ChatType>
   isActive: boolean
   weekDayText: { days: WeekDay[]; text: string }[]
+  deletingBot?: boolean
+  onDeleteBot?: () => void
 } & React.ComponentProps<typeof Card>) {
   const { data: session } = authClient.useSession()
   const updateBotSettingsMuitation = useMutation({
@@ -79,7 +84,6 @@ export function SettingsForm({
 
   const form = useForm({
     defaultValues: {
-      answerOnFirstMessage,
       isActive,
       chatTypes: new Set(chatTypes),
       weekDayText: weekDayText.length
@@ -147,7 +151,7 @@ export function SettingsForm({
                 )
               }}
             />
-            <form.Field
+            {/* <form.Field
               name="answerOnFirstMessage"
               children={(field) => {
                 return (
@@ -170,7 +174,7 @@ export function SettingsForm({
                   </Field>
                 )
               }}
-            />
+            /> */}
             <form.Field
               name="chatTypes"
               children={(field) => {
@@ -336,7 +340,7 @@ export function SettingsForm({
                       >
                         <PlusIcon />
                       </Button>
-                    </div>{" "}
+                    </div>
                   </Field>
                 )
               }}
@@ -344,12 +348,15 @@ export function SettingsForm({
           </FieldGroup>
         </form>
       </CardContent>
-      <CardFooter>
-        <Field orientation="horizontal">
-          <Button type="submit" form="bot-settings-form">
-            Сохранить
-          </Button>
-        </Field>
+      <CardFooter className="flex justify-between">
+        <Button type="submit" form="bot-settings-form">
+          Сохранить
+        </Button>
+
+        <Button variant="destructive" onClick={() => onDeleteBot?.()}>
+          {deletingBot && <Spinner data-icon="inline-start" />}
+          Отвязать бота
+        </Button>
       </CardFooter>
     </Card>
   )
