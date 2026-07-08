@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { authClient } from "@/lib/auth-client"
 import { useForm } from "@tanstack/react-form"
+import { redirect } from "next/navigation"
 import z from "zod"
 
 const formSchema = z
@@ -48,8 +49,9 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
         email: value.email,
         name: value.name,
         password: value.password,
-        callbackURL: process.env.NEXT_PUBLIC_LOGIN_REDIRECT_URL,
       })
+
+      redirect(process.env.NEXT_PUBLIC_LOGIN_REDIRECT_URL || "/")
     },
   })
 
