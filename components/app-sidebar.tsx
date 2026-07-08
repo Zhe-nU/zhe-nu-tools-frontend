@@ -2,9 +2,7 @@
 
 import * as React from "react"
 
-import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
-import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
@@ -18,16 +16,12 @@ import {
 import {
   TerminalSquareIcon,
   BotIcon,
-  BookOpenIcon,
-  Settings2Icon,
   LifeBuoyIcon,
   SendIcon,
-  FrameIcon,
-  PieChartIcon,
-  MapIcon,
-  TerminalIcon,
+  UserKeyIcon,
 } from "lucide-react"
 import { authClient } from "@/lib/auth-client"
+import Image from "next/image"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: session } = authClient.useSession()
@@ -36,7 +30,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     user: {
       name: session!.user.name,
       email: session!.user.email,
-      avatar: session!.user.image || '',
+      avatar: session!.user.image || "",
     },
     navMain: [
       {
@@ -78,6 +72,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         url: "/dashboard/manage-bot",
         icon: <BotIcon />,
       },
+      {
+        name: "Администрирование",
+        url: "/dashboard/admin/users",
+        icon: <UserKeyIcon />,
+      },
     ],
   }
 
@@ -91,8 +90,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <TerminalIcon className="size-4" />
+                <div className="flex aspect-square size-8 items-center justify-center rounded-full bg-sidebar-primary text-sidebar-primary-foreground">
+                  <Image src='/img/logo.png' alt="Logo" width={40} height={40} />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">Zhe_nU</span>
