@@ -1,59 +1,49 @@
+"use client"
+
+import { Button } from "@/components/ui/button"
 import {
   Card,
+  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field"
 import { authClient } from "@/lib/auth-client"
 import { useForm } from "@tanstack/react-form"
 import { toast } from "sonner"
 import z from "zod"
-
-const passwordSchema = z
-  .object({
-    currentPassword: z.string().min(1, "Укажите текущий пароль"),
-    newPassword: z.string().min(8, "Минимум 8 символов"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Пароли не совпадают",
-    path: ["confirmPassword"],
-  })
+import { UpdatePasswordDialog } from "./update-password-dialog"
+import { useState } from "react"
 
 export function ProfileForm() {
-  const passwordForm = useForm({
-    defaultValues: {
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    },
-    validators: {
-      onSubmit: passwordSchema,
-    },
-    onSubmit: async ({ value }) => {
-      await authClient.changePassword({
-        currentPassword: value.currentPassword,
-        newPassword: value.newPassword,
-        revokeOtherSessions: true,
-      })
-
-      toast.success("Пароль изменен")
-    },
-  })
+  const [isUpdatePasswordDialogOpen, setIsUpdatePasswordDialogOpen] =
+    useState(false)
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Управление профилем</CardTitle>
-        <CardDescription>
-          Ниже вы можете управлять своим профилем
-        </CardDescription>
+        <CardTitle>Пароль и безопасность</CardTitle>
       </CardHeader>
-      <CardTitle>
-        <form id="profile-form">
-          <form id="password-form"></form>
-        </form>
-      </CardTitle>
+      <CardContent>
+        <Field orientation="horizontal">
+          <FieldLabel>Пароль</FieldLabel>
+
+          <Button onClick={() => setIsUpdatePasswordDialogOpen(true)}>
+            Изменить пароль
+          </Button>
+
+          <UpdatePasswordDialog
+            open={isUpdatePasswordDialogOpen}
+            onOpenChange={setIsUpdatePasswordDialogOpen}
+          />
+        </Field>
+      </CardContent>
     </Card>
   )
 }

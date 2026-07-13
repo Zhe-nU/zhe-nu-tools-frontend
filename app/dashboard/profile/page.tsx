@@ -1,3 +1,5 @@
+import { ProfileForm } from "./ui/profile-form";
+
 export default function Page() {
-  return <div></div>
+  return <ProfileForm />
 }
