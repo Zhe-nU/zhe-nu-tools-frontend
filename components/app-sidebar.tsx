@@ -76,6 +76,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         name: "Администрирование",
         url: "/dashboard/admin/users",
         icon: <UserKeyIcon />,
+        roles: ["admin"],
       },
     ],
   }
