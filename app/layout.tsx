@@ -5,6 +5,8 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { Metadata } from "next"
+import QueryProviders from "@/providers/query-provider"
+import { Toaster } from "sonner"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -14,8 +16,8 @@ const fontMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Zhe_nU Tools',
-  description: '...'
+  title: "Zhe_nU Tools",
+  description: "...",
 }
 
 export default function RootLayout({
@@ -35,8 +37,11 @@ export default function RootLayout({
       )}
     >
       <body>
+        <Toaster />
         <ThemeProvider>
-          <TooltipProvider>{children}</TooltipProvider>
+          <TooltipProvider>
+            <QueryProviders>{children}</QueryProviders>
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
