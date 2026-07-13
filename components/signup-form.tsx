@@ -18,8 +18,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { authClient } from "@/lib/auth-client"
 import { useForm } from "@tanstack/react-form"
+import { useMutation } from "@tanstack/react-query"
 import { redirect } from "next/navigation"
 import z from "zod"
+import { Spinner } from "./ui/spinner"
 
 const formSchema = z
   .object({
@@ -34,6 +36,11 @@ const formSchema = z
   })
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
+  const signUpMutation = useMutation({
+    mutationFn: (data: { name: string; email: string; password: string }) =>
+      authClient.signUp.email(data),
+  })
+
   const form = useForm({
     defaultValues: {
       name: "",
@@ -45,13 +52,13 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      await authClient.signUp.email({
+      const { error } = await signUpMutation.mutateAsync({
         email: value.email,
         name: value.name,
         password: value.password,
       })
 
-      redirect(process.env.NEXT_PUBLIC_LOGIN_REDIRECT_URL || "/")
+      if (!error) redirect(process.env.NEXT_PUBLIC_LOGIN_REDIRECT_URL || "/")
     },
   })
 
@@ -176,7 +183,12 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
             </form.Field>
             <FieldGroup>
               <Field>
-                <Button type="submit">Создать аккаунт</Button>
+                <Button type="submit">
+                  {signUpMutation.isPending && (
+                    <Spinner data-icon="inline-start" />
+                  )}
+                  Создать аккаунт
+                </Button>
                 <FieldDescription className="px-6 text-center">
                   Уже есть аккаунт? <a href="login">Войти</a>
                 </FieldDescription>
