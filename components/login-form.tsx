@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input"
 import z from "zod"
 import { useForm } from "@tanstack/react-form"
 import { authClient } from "@/lib/auth-client"
+import { useMutation } from "@tanstack/react-query"
 
 const formSchema = z.object({
   email: z.email(),
@@ -30,6 +31,15 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const signInMutation = useMutation({
+    mutationFn: (data: {
+      email: string
+      password: string
+      rememberMe?: boolean | undefined
+      callbackURL?: string | undefined
+    }) => authClient.signIn.email(data),
+  })
+
   const form = useForm({
     defaultValues: {
       email: "",
@@ -39,7 +49,7 @@ export function LoginForm({
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      await authClient.signIn.email({
+      await signInMutation.mutateAsync({
         email: value.email,
         password: value.password,
         rememberMe: true,
