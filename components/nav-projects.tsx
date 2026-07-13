@@ -16,7 +16,13 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { MoreHorizontalIcon, FolderIcon, ShareIcon, Trash2Icon } from "lucide-react"
+import { authClient } from "@/lib/auth-client"
+import {
+  MoreHorizontalIcon,
+  FolderIcon,
+  ShareIcon,
+  Trash2Icon,
+} from "lucide-react"
 
 export function NavProjects({
   projects,
@@ -25,23 +31,31 @@ export function NavProjects({
     name: string
     url: string
     icon: React.ReactNode
+    roles?: string[]
   }[]
 }) {
   const { isMobile } = useSidebar()
+  const { data: session } = authClient.useSession()
+  const roles = session?.user.role?.split(",") || []
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Панель управления</SidebarGroupLabel>
       <SidebarMenu>
-        {projects.map((item) => (
-          <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild>
-              <a href={item.url}>
-                {item.icon}
-                <span>{item.name}</span>
-              </a>
-            </SidebarMenuButton>
-            {/* <DropdownMenu>
+        {projects
+          .filter(
+            (item) =>
+              !item.roles || roles.some((role) => item.roles?.includes(role))
+          )
+          .map((item) => (
+            <SidebarMenuItem key={item.name}>
+              <SidebarMenuButton asChild>
+                <a href={item.url}>
+                  {item.icon}
+                  <span>{item.name}</span>
+                </a>
+              </SidebarMenuButton>
+              {/* <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuAction
                   showOnHover
@@ -72,8 +86,8 @@ export function NavProjects({
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu> */}
-          </SidebarMenuItem>
-        ))}
+            </SidebarMenuItem>
+          ))}
         <SidebarMenuItem>
           {/* <SidebarMenuButton>
             <MoreHorizontalIcon
