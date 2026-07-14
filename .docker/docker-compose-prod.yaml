@@ -8,5 +8,6 @@ services:
         - NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
         - NEXT_PUBLIC_LOGIN_REDIRECT_URL=${NEXT_PUBLIC_LOGIN_REDIRECT_URL}
         - NODE_ENV=production
+    restart: unless-stopped
     ports:
       - '8080:3000'
