@@ -1,5 +1,11 @@
-import { ProfileForm } from "./ui/profile-form";
+import { AccountSection } from "./ui/account-section"
+import { SecuritySection } from "./ui/security-section"
 
 export default function Page() {
-  return <ProfileForm />
+  return (
+    <>
+      <AccountSection />
+      <SecuritySection />
+    </>
+  )
 }
