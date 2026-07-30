@@ -25,12 +25,42 @@ import { Textarea } from "@/components/ui/textarea"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { useForm } from "@tanstack/react-form"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { PlusIcon, TrashIcon } from "lucide-react"
+import { ChevronsUpDownIcon, PlusIcon, TrashIcon, XIcon } from "lucide-react"
 import { toast } from "sonner"
 import z from "zod"
 import { updateBotSettings } from "../api/bot"
 import { authClient } from "@/lib/auth-client"
 import { Spinner } from "@/components/ui/spinner"
+import {
+  useBotControllerGetBotSettings,
+  useBotControllerUpdateBotSettings,
+} from "@/app/client/endpoints/bot/bot"
+import { BotControllerUpdateBotSettingsBody } from "@/app/client/zod/endpoints/zheNUToolsAPI.zod"
+import { Separator } from "@/components/ui/separator"
+import { Badge } from "@/components/ui/badge"
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from "@/components/ui/item"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 
 const CHAT_TYPES = ["u2u", "u2i"] as const
 const WEEK_DAYS = [
@@ -46,65 +76,43 @@ const WEEK_DAYS = [
 export type ChatType = (typeof CHAT_TYPES)[number]
 export type WeekDay = (typeof WEEK_DAYS)[number]["value"]
 
-const formSchema = z.object({
-  answerOnFirstMessage: z.boolean().optional(),
-  chatTypes: z.set(z.enum(CHAT_TYPES)),
-  isActive: z.boolean(),
-  weekDayText: z.array(
-    z.object({
-      days: z
-        .array(z.enum(WEEK_DAYS.map((d) => d.value)))
-        .min(1, "Выберите хотя бы 1 день недели"),
-      text: z.string().min(1, "Текст сообщения не может быть пустым"),
-    })
-  ),
+const formSchema = BotControllerUpdateBotSettingsBody.extend({
+  chatTypes: z.set(z.enum(CHAT_TYPES)).transform((c) => Array.from(c)),
 })
 
 export function SettingsForm({
-  answerOnFirstMessage,
-  chatTypes,
-  isActive,
-  weekDayText,
+  botId,
   deletingBot,
   onDeleteBot,
   ...props
 }: {
-  answerOnFirstMessage?: boolean
-  chatTypes: Array<ChatType>
-  isActive: boolean
-  weekDayText: { days: WeekDay[]; text: string }[]
+  botId: string
   deletingBot?: boolean
   onDeleteBot?: () => void
 } & React.ComponentProps<typeof Card>) {
   const { data: session } = authClient.useSession()
-  const updateBotSettingsMuitation = useMutation({
-    mutationFn: (data: { isActive: boolean; chatTypes: Array<ChatType> }) =>
-      updateBotSettings(session!.user.id, data),
-  })
+
+  const {
+    data: botSettings,
+    isLoading: isLoadingBotSettings,
+    refetch: refetchBotSettings,
+  } = useBotControllerGetBotSettings(session!.user.id, botId)
+
+  const updateBotSettings = useBotControllerUpdateBotSettings()
 
   const form = useForm({
     defaultValues: {
-      isActive,
-      chatTypes: new Set(chatTypes),
-      weekDayText: weekDayText.length
-        ? weekDayText
-        : ([
-            {
-              days: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
-              text: "",
-            },
-          ] as {
-            days: WeekDay[]
-            text: string
-          }[]),
-    },
+      isActive: botSettings?.isActive,
+      chatTypes: new Set(botSettings?.chatTypes),
+    } as z.input<typeof formSchema>,
     validators: {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      await updateBotSettingsMuitation.mutateAsync({
-        ...value,
-        chatTypes: Array.from(value.chatTypes),
+      await updateBotSettings.mutateAsync({
+        userId: session!.user.id,
+        botId,
+        data: value,
       })
 
       toast.success("Настройки сохранены")
@@ -119,7 +127,7 @@ export function SettingsForm({
           Ниже вы можете управлять поведением Avito бота
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-4">
         <form
           id="bot-settings-form"
           onSubmit={(e) => {
@@ -240,113 +248,153 @@ export function SettingsForm({
                 )
               }}
             />
-            <FieldSeparator />
-            <form.Field name="weekDayText" mode="array">
-              {(field) => {
-                return (
-                  <Field>
-                    <FieldLabel>Текст автоответа:</FieldLabel>
-                    <FieldDescription>
-                      Введите текст сообщения для автоответа ниже (при
-                      необходимости выберите дни для ответа)
-                    </FieldDescription>
-                    <div className="space-y-4">
-                      {field.state.value.map((_, i) => (
-                        <div className="space-y-2" key={i}>
-                          <div className="flex justify-between">
-                            <form.Field name={`weekDayText[${i}].days`}>
-                              {(subField) => {
-                                const isInvalid =
-                                  subField.state.meta.isTouched &&
-                                  !subField.state.meta.isValid
-                                return (
-                                  <Field data-invalid={isInvalid}>
-                                    <ToggleGroup
-                                      onValueChange={(value: WeekDay[]) => {
-                                        field.handleChange(
-                                          field.state.value.map((i) => ({
-                                            days: i.days.filter(
-                                              (day) => !value.includes(day)
-                                            ),
-                                            text: i.text,
-                                          }))
-                                        )
-                                        subField.handleChange(value)
-                                      }}
-                                      value={subField.state.value}
-                                      variant="outline"
-                                      type="multiple"
-                                    >
-                                      {WEEK_DAYS.map((day, i) => (
-                                        <ToggleGroupItem
-                                          key={i}
-                                          value={day.value}
-                                        >
-                                          {day.label}
-                                        </ToggleGroupItem>
-                                      ))}
-                                    </ToggleGroup>
-                                    {isInvalid && (
-                                      <FieldError
-                                        errors={subField.state.meta.errors}
-                                      />
-                                    )}
-                                  </Field>
-                                )
-                              }}
-                            </form.Field>
-                            {i > 0 && (
-                              <Button
-                                onClick={() => field.removeValue(i)}
-                                type="button"
-                                variant="destructive"
-                              >
-                                <TrashIcon />
-                              </Button>
-                            )}
-                          </div>
-                          <form.Field name={`weekDayText[${i}].text`}>
-                            {(subField) => {
-                              const isInvalid =
-                                subField.state.meta.isTouched &&
-                                !subField.state.meta.isValid
-                              return (
-                                <Field data-invalid={isInvalid}>
-                                  <Textarea
-                                    id={field.name}
-                                    onBlur={field.handleBlur}
-                                    onChange={(e) =>
-                                      subField.handleChange(e.target.value)
-                                    }
-                                    aria-invalid={isInvalid}
-                                    placeholder="Текст сообщения"
-                                    value={subField.state.value}
-                                  />
-                                  {isInvalid && (
-                                    <FieldError
-                                      errors={subField.state.meta.errors}
-                                    />
-                                  )}
-                                </Field>
-                              )
-                            }}
-                          </form.Field>
-                        </div>
-                      ))}
-
-                      <Button
-                        onClick={() => field.pushValue({ days: [], text: "" })}
-                        type="button"
-                      >
-                        <PlusIcon />
-                      </Button>
-                    </div>
-                  </Field>
-                )
-              }}
-            </form.Field>
           </FieldGroup>
         </form>
+
+        <Separator />
+
+        <FieldSet>
+          <FieldLegend>Условия</FieldLegend>
+          <FieldDescription>
+            Ниже вы можете настроить условия для срабатывания автоответа
+          </FieldDescription>
+          <FieldGroup>
+            <FieldLabel>Расписание</FieldLabel>
+            <FieldDescription>
+              Выберите расписания для автоответа
+            </FieldDescription>
+            <Field>
+              <div className="flex gap-2">
+                <div className="inline-flex w-fit items-center rounded-full border border-transparent bg-primary px-1 py-0.5 text-xs font-medium text-primary-foreground select-none">
+                  <Button variant="ghost" size="xs" className="rounded-full">
+                    ПН-ПТ 9:00-18:00
+                  </Button>
+                  <Button
+                    size="icon-xs"
+                    variant="ghost"
+                    className="rounded-full"
+                  >
+                    <XIcon />
+                  </Button>
+                </div>
+
+                <Dialog>
+                  <DialogTrigger>
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      className="rounded-full"
+                    >
+                      <PlusIcon />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-2xl">
+                    <DialogHeader>
+                      <DialogTitle>Добавить расписание</DialogTitle>
+                      <DialogDescription>
+                        Выберите расписание из вашего списка
+                      </DialogDescription>
+                    </DialogHeader>
+
+                    <Item>
+                      <ItemContent>
+                        <ItemTitle>Основное расписание</ItemTitle>
+                        <ItemDescription>
+                          Расписание для будних дней
+                        </ItemDescription>
+                      </ItemContent>
+                      <ItemActions>
+                        <Button variant="outline">Добавить</Button>
+                        <Dialog>
+                          <DialogTrigger>
+                            <Button variant="outline">Редактировать</Button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-2xl">
+                            <DialogHeader>
+                              <DialogTitle>
+                                Редактировать расписание
+                              </DialogTitle>
+                              <DialogDescription>
+                                Основное расписание
+                              </DialogDescription>
+                            </DialogHeader>
+
+                            <Collapsible>
+                              <div className="flex items-center justify-between gap-4">
+                                <h4 className="text-sm font-semibold">
+                                  Понедельник
+                                </h4>
+                                <CollapsibleTrigger>
+                                  <Button variant="ghost" size="icon">
+                                    <ChevronsUpDownIcon />
+                                    <span className="sr-only">
+                                      Toggle details
+                                    </span>
+                                  </Button>
+                                </CollapsibleTrigger>
+                              </div>
+
+                              <CollapsibleContent className="flex flex-col gap-2 px-4">
+                                <div className="flex flex-col gap-2 py-2 text-sm">
+                                  <p className="font-medium">00:00 - 23:59</p>
+                                  <Textarea />
+                                </div>
+
+                                <Separator />
+
+                                <div className="flex flex-col gap-2 py-2 text-sm">
+                                  <p className="font-medium">00:00 - 23:59</p>
+                                  <Textarea />
+                                </div>
+                              </CollapsibleContent>
+                            </Collapsible>
+                            <Collapsible>
+                              <div className="flex items-center justify-between gap-4">
+                                <h4 className="text-sm font-semibold">
+                                  Вторник
+                                </h4>
+                                <CollapsibleTrigger>
+                                  <Button variant="ghost" size="icon">
+                                    <ChevronsUpDownIcon />
+                                    <span className="sr-only">
+                                      Toggle details
+                                    </span>
+                                  </Button>
+                                </CollapsibleTrigger>
+                              </div>
+
+                              <CollapsibleContent className="flex flex-col gap-2 px-4">
+                                <div className="flex flex-col gap-2 py-2 text-sm">
+                                  <p className="font-medium">00:00 - 23:59</p>
+                                  <Textarea />
+                                </div>
+
+                                <Separator />
+
+                                <div className="flex flex-col gap-2 py-2 text-sm">
+                                  <p className="font-medium">00:00 - 23:59</p>
+                                  <Textarea />
+                                </div>
+                              </CollapsibleContent>
+                            </Collapsible>
+
+                            <DialogFooter>
+                              <DialogClose asChild><Button>Закрыть</Button></DialogClose>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      </ItemActions>
+                    </Item>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </Field>
+          </FieldGroup>
+          <FieldGroup>
+            <FieldLabel>Объявления</FieldLabel>
+            <Field></Field>
+          </FieldGroup>
+        </FieldSet>
       </CardContent>
       <CardFooter className="flex justify-between">
         <Button type="submit" form="bot-settings-form">
