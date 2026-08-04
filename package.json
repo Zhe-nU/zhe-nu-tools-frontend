@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
+    "@faker-js/faker": "^10.5.0",
     "@tailwindcss/postcss": "^4.3.2",
     "@tanstack/react-query-devtools": "^5.101.2",
     "@types/node": "^25.9.4",
@@ -46,6 +47,7 @@
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.4",
     "eslint-config-next": "16.1.7",
+    "msw": "^2.15.0",
     "postcss": "^8.5.16",
     "prettier": "^3.9.4",
     "prettier-plugin-tailwindcss": "^0.7.4",
