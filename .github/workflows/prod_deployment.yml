@@ -2,9 +2,9 @@ name: PROD
 
 on:
   push:
-    branches: ['main']
+    branches: ["main"]
   pull_request:
-    branches: ['main']
+    branches: ["main"]
 
 jobs:
   build:
@@ -19,6 +19,7 @@ jobs:
         env:
           NEXT_PUBLIC_AVITO_CLIENT_ID: ${{ vars.NEXT_PUBLIC_AVITO_CLIENT_ID }}
           NEXT_PUBLIC_API_BASE_URL: ${{ vars.NEXT_PUBLIC_API_BASE_URL }}
+          NEXT_PUBLIC_FORGOT_PASSWORD_REDIRECT_URL: ${{ vars.NEXT_PUBLIC_FORGOT_PASSWORD_REDIRECT_URL }}
           NEXT_PUBLIC_LOGIN_REDIRECT_URL: ${{ vars.NEXT_PUBLIC_LOGIN_REDIRECT_URL }}
         run: |
           docker compose -f ./.docker/docker-compose-prod.yaml up -d --build
