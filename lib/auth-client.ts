@@ -7,7 +7,7 @@ export const authClient = createAuthClient({
   plugins: [adminClient()],
   fetchOptions: {
     onError(context) {
-      toast.error(`Ошибка ${context.error.code}: ${context.error.message}`)
+      toast.error(context.error.message)
       throw context.error
     },
   },
