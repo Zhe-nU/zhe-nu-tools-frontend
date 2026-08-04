@@ -1,11 +1,12 @@
-"use client"
-
-import { useSearchParams } from "next/navigation"
+import { use } from "react"
 import { ResetPasswordForm } from "./ui/reset-password-form"
 
-export default function Page() {
-  const params = useSearchParams()
-  const token = params.get("token")
+export default function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ token?: string }>
+}) {
+  const { token } = use(searchParams)
 
   if (!token) {
     return <div>Token is missing</div>
