@@ -110,12 +110,12 @@ export function LoginForm({
                     <Field>
                       <div className="flex items-center">
                         <FieldLabel htmlFor="password">Пароль</FieldLabel>
-                        {/* <a
-                          href="#"
+                        <a
+                          href="forgot-password"
                           className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                         >
                           Забыли пароль?
-                        </a> */}
+                        </a>
                       </div>
                       <Input
                         id={field.name}
