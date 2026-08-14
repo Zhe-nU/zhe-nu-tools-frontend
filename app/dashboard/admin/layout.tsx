@@ -1,1 +1,1 @@
-export { AdminLayout as default } from "@shared/ui/layouts/AdminLayout/AdminLayout"
+export { AdminLayout as default } from "@/widgets/layouts/AdminLayout/AdminLayout"

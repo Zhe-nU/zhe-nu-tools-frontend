@@ -1,1 +1,1 @@
-export { DashboardSchedulesPage } from "./ui/dashboard-schedule-page"
+export { DashboardSchedulesPage } from "./ui/dashboard-schedules-page"

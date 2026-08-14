@@ -1,3 +1,5 @@
+'use client'
+
 import { authClient } from "@shared/api/auth-client"
 import { DataTable } from "./data-table"
 import { useMutation, useQuery } from "@tanstack/react-query"

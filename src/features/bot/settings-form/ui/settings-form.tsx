@@ -43,16 +43,14 @@ export function SettingsForm({ botId, deletingBot, onDeleteBot }: Props) {
 
   const { data: botSettings, isLoading: isLoadingBotSettings } =
     useBotControllerGetBotSettings(userId, botId)
-  const { data: botSchedules, isLoading: isLoadingBotSchedules } =
-    useBotControllerGetBotSchedules(userId, botId)
 
   const updateBotSettings = useBotControllerUpdateBotSettings()
-  const updateSchedule = useScheduleControllerUpdateSchedule()
 
   const form = useForm({
     defaultValues: {
+      answerOnFirstMessage: botSettings?.answerOnFirstMessage ?? true,
       isActive: botSettings?.isActive ?? false,
-      chatTypes: botSettings?.chatTypes,
+      chatTypes: botSettings?.chatTypes ?? [],
     },
     validators: {
       onSubmit: formSchema,
@@ -183,7 +181,7 @@ export function SettingsForm({ botId, deletingBot, onDeleteBot }: Props) {
                             onCheckedChange={(checked) =>
                               field.handleChange(
                                 checked === true
-                                  ? Array.from(chatTypesSet.add("u2i"))
+                                  ? () => Array.from(chatTypesSet.add("u2i"))
                                   : () => {
                                       chatTypesSet.delete("u2i")
                                       return Array.from(chatTypesSet)
