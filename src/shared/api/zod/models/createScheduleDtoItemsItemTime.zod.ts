@@ -8,10 +8,9 @@
 import type { CreateScheduleDtoItemsItemTimeEndTime } from './createScheduleDtoItemsItemTimeEndTime.zod';
 import type { CreateScheduleDtoItemsItemTimeStartTime } from './createScheduleDtoItemsItemTimeStartTime.zod';
 
-/**
- * Объект с временем начала и окончания в формате [HH, MM]
- */
 export type CreateScheduleDtoItemsItemTime = {
+  /** Объект с данными о времени */
   startTime: CreateScheduleDtoItemsItemTimeStartTime;
+  /** Объект с данными о времени */
   endTime: CreateScheduleDtoItemsItemTimeEndTime;
 };

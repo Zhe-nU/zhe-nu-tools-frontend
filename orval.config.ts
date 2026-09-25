@@ -14,6 +14,7 @@ export default defineConfig({
       httpClient: "axios",
       mock: true,
       override: {
+        query: { useGetQueryData: true, useSetQueryData: true },
         mutator: {
           path: "./src/shared/api/client.ts",
           name: "customInstance",

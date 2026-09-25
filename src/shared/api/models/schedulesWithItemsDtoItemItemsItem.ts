@@ -13,16 +13,17 @@ export type SchedulesWithItemsDtoItemItemsItem = {
   id: string;
   weekDay: SchedulesWithItemsDtoItemItemsItemWeekDay;
   /**
+     * Строка времени в формате [HH:mm]
      * @deprecated
      * @pattern ^([01]\d|2[0-3]):([0-5]\d)$
      */
   startTime?: string;
   /**
+     * Строка времени в формате [HH:mm]
      * @deprecated
      * @pattern ^([01]\d|2[0-3]):([0-5]\d)$
      */
   endTime?: string;
-  /** Объект с временем начала и окончания в формате [HH, MM] */
   time: SchedulesWithItemsDtoItemItemsItemTime;
   /** @minLength 1 */
   text: string;

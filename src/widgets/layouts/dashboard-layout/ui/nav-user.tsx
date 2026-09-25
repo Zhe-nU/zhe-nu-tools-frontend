@@ -7,7 +7,12 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@shared/ui/dropdown-menu"
 import {
@@ -17,13 +22,15 @@ import {
   useSidebar,
 } from "@shared/ui/sidebar"
 import { authClient } from "@shared/api/auth-client"
+import { useTheme } from "next-themes"
 import {
-  ChevronsUpDownIcon,
-  SparklesIcon,
   BadgeCheckIcon,
-  CreditCardIcon,
-  BellIcon,
+  ChevronsUpDownIcon,
   LogOutIcon,
+  MonitorIcon,
+  MoonIcon,
+  PaletteIcon,
+  SunIcon,
 } from "lucide-react"
 import Link from "next/link"
 
@@ -37,6 +44,13 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const { theme, setTheme } = useTheme()
+
+  const themeItems = [
+    { value: "light", label: "Светлая", icon: SunIcon },
+    { value: "dark", label: "Темная", icon: MoonIcon },
+    { value: "system", label: "Системная", icon: MonitorIcon },
+  ]
 
   return (
     <SidebarMenu>
@@ -82,6 +96,28 @@ export function NavUser({
                 <BadgeCheckIcon />
                 <Link href="/dashboard/profile" children="Аккаунт" />
               </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <PaletteIcon />
+                  Тема
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <DropdownMenuRadioGroup
+                    value={theme}
+                    onValueChange={setTheme}
+                  >
+                    {themeItems.map(({ value, label, icon: Icon }) => (
+                      <DropdownMenuRadioItem key={value} value={value}>
+                        <Icon />
+                        {label}
+                      </DropdownMenuRadioItem>
+                    ))}
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => authClient.signOut()}>

@@ -6,7 +6,8 @@
  * OpenAPI spec version: 1.0
  */
 import {
-  useQuery
+  useQuery,
+  useQueryClient
 } from '@tanstack/react-query';
 import type {
   DataTag,
@@ -131,6 +132,17 @@ export function useAvitoCallbackControllerGetBotSettings<TData = Awaited<ReturnT
 
 
 
+export const useSetAvitoCallbackControllerGetBotSettingsQueryData = () => {
+  const queryClient = useQueryClient();
+  return (params: AvitoCallbackControllerGetBotSettingsParams | undefined,updater: Awaited<ReturnType<typeof avitoCallbackControllerGetBotSettings>> | undefined | ((old: Awaited<ReturnType<typeof avitoCallbackControllerGetBotSettings>> | undefined) => Awaited<ReturnType<typeof avitoCallbackControllerGetBotSettings>> | undefined)) => {
+    queryClient.setQueriesData<Awaited<ReturnType<typeof avitoCallbackControllerGetBotSettings>>>({ queryKey: getAvitoCallbackControllerGetBotSettingsQueryKey(params) }, updater);
+  };
+}
 
+export const useGetAvitoCallbackControllerGetBotSettingsQueryData = () => {
+  const queryClient = useQueryClient();
+  return (params: AvitoCallbackControllerGetBotSettingsParams,) =>
+    queryClient.getQueryData<Awaited<ReturnType<typeof avitoCallbackControllerGetBotSettings>>>(getAvitoCallbackControllerGetBotSettingsQueryKey(params));
+}
 
 

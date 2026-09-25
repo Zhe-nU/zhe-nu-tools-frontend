@@ -8,10 +8,9 @@
 import type { UpdateScheduleItemDtoTimeEndTime } from './updateScheduleItemDtoTimeEndTime.zod';
 import type { UpdateScheduleItemDtoTimeStartTime } from './updateScheduleItemDtoTimeStartTime.zod';
 
-/**
- * Объект с временем начала и окончания в формате [HH, MM]
- */
 export type UpdateScheduleItemDtoTime = {
+  /** Объект с данными о времени */
   startTime: UpdateScheduleItemDtoTimeStartTime;
+  /** Объект с данными о времени */
   endTime: UpdateScheduleItemDtoTimeEndTime;
 };

@@ -7,7 +7,8 @@
  */
 import {
   useMutation,
-  useQuery
+  useQuery,
+  useQueryClient
 } from '@tanstack/react-query';
 import type {
   DataTag,
@@ -139,7 +140,18 @@ export function useBotControllerGetUserBots<TData = Awaited<ReturnType<typeof bo
 
 
 
+export const useSetBotControllerGetUserBotsQueryData = () => {
+  const queryClient = useQueryClient();
+  return (userId: string,updater: Awaited<ReturnType<typeof botControllerGetUserBots>> | undefined | ((old: Awaited<ReturnType<typeof botControllerGetUserBots>> | undefined) => Awaited<ReturnType<typeof botControllerGetUserBots>> | undefined)) => {
+    queryClient.setQueriesData<Awaited<ReturnType<typeof botControllerGetUserBots>>>({ queryKey: getBotControllerGetUserBotsQueryKey(userId) }, updater);
+  };
+}
 
+export const useGetBotControllerGetUserBotsQueryData = () => {
+  const queryClient = useQueryClient();
+  return (userId: string,) =>
+    queryClient.getQueryData<Awaited<ReturnType<typeof botControllerGetUserBots>>>(getBotControllerGetUserBotsQueryKey(userId));
+}
 
 
 export const botControllerGetBot = (
@@ -232,7 +244,20 @@ export function useBotControllerGetBot<TData = Awaited<ReturnType<typeof botCont
 
 
 
+export const useSetBotControllerGetBotQueryData = () => {
+  const queryClient = useQueryClient();
+  return (userId: string,
+    botId: string,updater: Awaited<ReturnType<typeof botControllerGetBot>> | undefined | ((old: Awaited<ReturnType<typeof botControllerGetBot>> | undefined) => Awaited<ReturnType<typeof botControllerGetBot>> | undefined)) => {
+    queryClient.setQueriesData<Awaited<ReturnType<typeof botControllerGetBot>>>({ queryKey: getBotControllerGetBotQueryKey(userId,botId) }, updater);
+  };
+}
 
+export const useGetBotControllerGetBotQueryData = () => {
+  const queryClient = useQueryClient();
+  return (userId: string,
+    botId: string,) =>
+    queryClient.getQueryData<Awaited<ReturnType<typeof botControllerGetBot>>>(getBotControllerGetBotQueryKey(userId,botId));
+}
 
 
 export const botControllerDeleteBot = (
@@ -502,7 +527,20 @@ export function useBotControllerGetBotSchedules<TData = Awaited<ReturnType<typeo
 
 
 
+export const useSetBotControllerGetBotSchedulesQueryData = () => {
+  const queryClient = useQueryClient();
+  return (userId: string,
+    botId: string,updater: Awaited<ReturnType<typeof botControllerGetBotSchedules>> | undefined | ((old: Awaited<ReturnType<typeof botControllerGetBotSchedules>> | undefined) => Awaited<ReturnType<typeof botControllerGetBotSchedules>> | undefined)) => {
+    queryClient.setQueriesData<Awaited<ReturnType<typeof botControllerGetBotSchedules>>>({ queryKey: getBotControllerGetBotSchedulesQueryKey(userId,botId) }, updater);
+  };
+}
 
+export const useGetBotControllerGetBotSchedulesQueryData = () => {
+  const queryClient = useQueryClient();
+  return (userId: string,
+    botId: string,) =>
+    queryClient.getQueryData<Awaited<ReturnType<typeof botControllerGetBotSchedules>>>(getBotControllerGetBotSchedulesQueryKey(userId,botId));
+}
 
 
 export const botControllerGetBotSettings = (
@@ -595,7 +633,20 @@ export function useBotControllerGetBotSettings<TData = Awaited<ReturnType<typeof
 
 
 
+export const useSetBotControllerGetBotSettingsQueryData = () => {
+  const queryClient = useQueryClient();
+  return (userId: string,
+    botId: string,updater: Awaited<ReturnType<typeof botControllerGetBotSettings>> | undefined | ((old: Awaited<ReturnType<typeof botControllerGetBotSettings>> | undefined) => Awaited<ReturnType<typeof botControllerGetBotSettings>> | undefined)) => {
+    queryClient.setQueriesData<Awaited<ReturnType<typeof botControllerGetBotSettings>>>({ queryKey: getBotControllerGetBotSettingsQueryKey(userId,botId) }, updater);
+  };
+}
 
+export const useGetBotControllerGetBotSettingsQueryData = () => {
+  const queryClient = useQueryClient();
+  return (userId: string,
+    botId: string,) =>
+    queryClient.getQueryData<Awaited<ReturnType<typeof botControllerGetBotSettings>>>(getBotControllerGetBotSettingsQueryKey(userId,botId));
+}
 
 
 export const botControllerUpdateBotSettings = (

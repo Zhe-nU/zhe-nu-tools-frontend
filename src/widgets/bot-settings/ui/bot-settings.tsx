@@ -9,7 +9,7 @@ import {
 import { Spinner } from "@/shared/ui/spinner"
 import { toast } from "sonner"
 import { BotUnlinked } from "./bot-unlinked"
-import { ScheduleForm } from "@/features/bot/sсhedule-form"
+import { ScheduleForm } from "@/features/bot/schedule-form"
 
 export function BotSettings({ botId }: { botId: string }) {
   const { data: session } = authClient.useSession()

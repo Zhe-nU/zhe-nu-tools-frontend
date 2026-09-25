@@ -10,13 +10,12 @@ import {
 } from '@faker-js/faker';
 
 import type {
-  ScheduleDto,
   ScheduleWithItemsDto,
   SchedulesWithItemsDto
 } from '../../models';
 
 
-export const getScheduleControllerCreateScheduleResponseMock = (overrideResponse: Partial<Extract<ScheduleDto, object>> = {}): ScheduleDto => ({id: faker.string.uuid(), name: faker.string.alpha({length: {min: 1, max: 20}}), ...overrideResponse})
+export const getScheduleControllerCreateScheduleResponseMock = (overrideResponse: Partial<Extract<ScheduleWithItemsDto, object>> = {}): ScheduleWithItemsDto => ({id: faker.string.uuid(), name: faker.string.alpha({length: {min: 1, max: 20}}), items: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), weekDay: faker.helpers.arrayElement(['mon','tue','wed','thu','fri','sat','sun'] as const), startTime: faker.helpers.arrayElement([faker.helpers.fromRegExp("^([01]\\d|2[0-3]):([0-5]\\d)$"), undefined]), endTime: faker.helpers.arrayElement([faker.helpers.fromRegExp("^([01]\\d|2[0-3]):([0-5]\\d)$"), undefined]), time: {startTime: {hours: faker.number.int({min: 0, max: 23}), minutes: faker.number.int({min: 0, max: 59})}, endTime: {hours: faker.number.int({min: 0, max: 23}), minutes: faker.number.int({min: 0, max: 59})}}, text: faker.string.alpha({length: {min: 1, max: 20}})})), ...overrideResponse})
 
 export const getScheduleControllerUserScheduleListResponseMock = (): SchedulesWithItemsDto => (Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), name: faker.string.alpha({length: {min: 1, max: 20}}), items: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.string.uuid(), weekDay: faker.helpers.arrayElement(['mon','tue','wed','thu','fri','sat','sun'] as const), startTime: faker.helpers.arrayElement([faker.helpers.fromRegExp("^([01]\\d|2[0-3]):([0-5]\\d)$"), undefined]), endTime: faker.helpers.arrayElement([faker.helpers.fromRegExp("^([01]\\d|2[0-3]):([0-5]\\d)$"), undefined]), time: {startTime: {hours: faker.number.int({min: 0, max: 23}), minutes: faker.number.int({min: 0, max: 59})}, endTime: {hours: faker.number.int({min: 0, max: 23}), minutes: faker.number.int({min: 0, max: 59})}}, text: faker.string.alpha({length: {min: 1, max: 20}})}))})))
 

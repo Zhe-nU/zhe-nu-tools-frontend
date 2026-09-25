@@ -5,23 +5,98 @@
  * API for Zhe_nU Tools
  * OpenAPI spec version: 1.0
  */
-import type { UpdateScheduleDtoItemsItemTime } from './updateScheduleDtoItemsItemTime.zod';
-import type { UpdateScheduleDtoItemsItemWeekDay } from './updateScheduleDtoItemsItemWeekDay.zod';
 
+/**
+ * Список частей расписания. Возможна передача как новых частей для создания, так и существующих для изменения
+ */
 export type UpdateScheduleDtoItemsItem = {
-  weekDay: UpdateScheduleDtoItemsItemWeekDay;
+  weekDay: 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
   /**
+     * Строка времени в формате [HH:mm]
      * @deprecated
      * @pattern ^([01]\d|2[0-3]):([0-5]\d)$
      */
   startTime?: string;
   /**
+     * Строка времени в формате [HH:mm]
      * @deprecated
      * @pattern ^([01]\d|2[0-3]):([0-5]\d)$
      */
   endTime?: string;
-  /** Объект с временем начала и окончания в формате [HH, MM] */
-  time: UpdateScheduleDtoItemsItemTime;
+  time: {
+  /** Объект с данными о времени */
+  startTime: {
+  /**
+     * @minimum 0
+     * @maximum 23
+     */
+  hours: number;
+  /**
+     * @minimum 0
+     * @maximum 59
+     */
+  minutes: number;
+};
+  /** Объект с данными о времени */
+  endTime: {
+  /**
+     * @minimum 0
+     * @maximum 23
+     */
+  hours: number;
+  /**
+     * @minimum 0
+     * @maximum 59
+     */
+  minutes: number;
+};
+};
   /** @minLength 1 */
   text: string;
+} | {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id?: string;
+  weekDay?: 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
+  /**
+     * Строка времени в формате [HH:mm]
+     * @deprecated
+     * @pattern ^([01]\d|2[0-3]):([0-5]\d)$
+     */
+  startTime?: string;
+  /**
+     * Строка времени в формате [HH:mm]
+     * @deprecated
+     * @pattern ^([01]\d|2[0-3]):([0-5]\d)$
+     */
+  endTime?: string;
+  time?: {
+  /** Объект с данными о времени */
+  startTime: {
+  /**
+     * @minimum 0
+     * @maximum 23
+     */
+  hours: number;
+  /**
+     * @minimum 0
+     * @maximum 59
+     */
+  minutes: number;
+};
+  /** Объект с данными о времени */
+  endTime: {
+  /**
+     * @minimum 0
+     * @maximum 23
+     */
+  hours: number;
+  /**
+     * @minimum 0
+     * @maximum 59
+     */
+  minutes: number;
+};
+};
+  /** @minLength 1 */
+  text?: string;
 };

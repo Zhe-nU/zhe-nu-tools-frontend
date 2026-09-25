@@ -5,10 +5,9 @@
  * API for Zhe_nU Tools
  * OpenAPI spec version: 1.0
  */
-import type { CreateScheduleDtoItemsItem } from './createScheduleDtoItemsItem.zod';
 
 export interface CreateScheduleDto {
   /** @minLength 1 */
   name: string;
-  items?: CreateScheduleDtoItemsItem[];
+  description?: string;
 }

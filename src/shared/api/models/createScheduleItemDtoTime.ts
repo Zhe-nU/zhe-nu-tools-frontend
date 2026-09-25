@@ -8,10 +8,9 @@
 import type { CreateScheduleItemDtoTimeEndTime } from './createScheduleItemDtoTimeEndTime';
 import type { CreateScheduleItemDtoTimeStartTime } from './createScheduleItemDtoTimeStartTime';
 
-/**
- * Объект с временем начала и окончания в формате [HH, MM]
- */
 export type CreateScheduleItemDtoTime = {
+  /** Объект с данными о времени */
   startTime: CreateScheduleItemDtoTimeStartTime;
+  /** Объект с данными о времени */
   endTime: CreateScheduleItemDtoTimeEndTime;
 };

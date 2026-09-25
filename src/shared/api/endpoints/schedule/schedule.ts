@@ -7,7 +7,8 @@
  */
 import {
   useMutation,
-  useQuery
+  useQuery,
+  useQueryClient
 } from '@tanstack/react-query';
 import type {
   DataTag,
@@ -26,7 +27,6 @@ import type {
 
 import type {
   CreateScheduleDto,
-  ScheduleDto,
   ScheduleWithItemsDto,
   SchedulesWithItemsDto,
   UpdateScheduleDto
@@ -62,7 +62,7 @@ export const scheduleControllerCreateSchedule = (
 ) => {
 
 
-      return customInstance<ScheduleDto>(
+      return customInstance<ScheduleWithItemsDto>(
       {url: `/api/users/${userId}/schedules`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: createScheduleDto, signal
@@ -197,7 +197,18 @@ export function useScheduleControllerUserScheduleList<TData = Awaited<ReturnType
 
 
 
+export const useSetScheduleControllerUserScheduleListQueryData = () => {
+  const queryClient = useQueryClient();
+  return (userId: string,updater: Awaited<ReturnType<typeof scheduleControllerUserScheduleList>> | undefined | ((old: Awaited<ReturnType<typeof scheduleControllerUserScheduleList>> | undefined) => Awaited<ReturnType<typeof scheduleControllerUserScheduleList>> | undefined)) => {
+    queryClient.setQueriesData<Awaited<ReturnType<typeof scheduleControllerUserScheduleList>>>({ queryKey: getScheduleControllerUserScheduleListQueryKey(userId) }, updater);
+  };
+}
 
+export const useGetScheduleControllerUserScheduleListQueryData = () => {
+  const queryClient = useQueryClient();
+  return (userId: string,) =>
+    queryClient.getQueryData<Awaited<ReturnType<typeof scheduleControllerUserScheduleList>>>(getScheduleControllerUserScheduleListQueryKey(userId));
+}
 
 
 export const scheduleControllerGetSchedule = (
@@ -290,7 +301,20 @@ export function useScheduleControllerGetSchedule<TData = Awaited<ReturnType<type
 
 
 
+export const useSetScheduleControllerGetScheduleQueryData = () => {
+  const queryClient = useQueryClient();
+  return (userId: string,
+    scheduleId: string,updater: Awaited<ReturnType<typeof scheduleControllerGetSchedule>> | undefined | ((old: Awaited<ReturnType<typeof scheduleControllerGetSchedule>> | undefined) => Awaited<ReturnType<typeof scheduleControllerGetSchedule>> | undefined)) => {
+    queryClient.setQueriesData<Awaited<ReturnType<typeof scheduleControllerGetSchedule>>>({ queryKey: getScheduleControllerGetScheduleQueryKey(userId,scheduleId) }, updater);
+  };
+}
 
+export const useGetScheduleControllerGetScheduleQueryData = () => {
+  const queryClient = useQueryClient();
+  return (userId: string,
+    scheduleId: string,) =>
+    queryClient.getQueryData<Awaited<ReturnType<typeof scheduleControllerGetSchedule>>>(getScheduleControllerGetScheduleQueryKey(userId,scheduleId));
+}
 
 
 export const scheduleControllerUpdateSchedule = (

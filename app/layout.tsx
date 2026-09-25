@@ -7,6 +7,7 @@ import { cn } from "@/shared/lib/tailwind/utils"
 import { TooltipProvider } from "@/shared/ui/tooltip"
 import QueryProviders from "../src/shared/ui/providers/query-provider"
 import { ThemeProvider } from "../src/shared/ui/providers/theme-provider"
+import { FormDevtoolsProvider } from "@/shared/lib/form-devtools"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -43,6 +44,7 @@ export default function RootLayout({
             <QueryProviders>{children}</QueryProviders>
           </TooltipProvider>
         </ThemeProvider>
+        <FormDevtoolsProvider />
       </body>
     </html>
   )

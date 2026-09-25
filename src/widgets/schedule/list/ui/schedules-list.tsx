@@ -1,9 +1,12 @@
 "use client"
 
+import { AddScheduleDialog } from "@/features/schedule/add"
 import { EditScheduleDialog } from "@/features/schedule/edit"
+import { useScheduleList } from "@/features/schedule/list/model/use-schedule-list"
 import { authClient } from "@/shared/api/auth-client"
-import { useScheduleControllerUserScheduleList } from "@/shared/api/endpoints/schedule/schedule"
-import { SchedulesWithItemsDtoOutputItem } from "@/shared/api/models"
+import {
+  SchedulesWithItemsDtoItem,
+} from "@/shared/api/models"
 import { Button } from "@/shared/ui/button"
 import {
   Item,
@@ -14,39 +17,51 @@ import {
   ItemTitle,
 } from "@/shared/ui/item"
 import { Spinner } from "@/shared/ui/spinner"
-import { Edit, Trash } from "lucide-react"
+import { Edit, PlusIcon, Trash } from "lucide-react"
 import { useState } from "react"
 
 export function SchedulesList() {
-  const [editingSchedule, setEditingSchedule] =
-    useState<SchedulesWithItemsDtoOutputItem>()
-  const [isOpenEditScheduleDialog, setIsOpenScheduleDailog] = useState(false)
+  const [isOpenAddScheduleDialog, setIsOpenAddScheduleDailog] = useState(false)
+
+  const [isOpenEditScheduleDialog, setIsOpenEditScheduleDailog] =
+    useState(false)
 
   const { data: session } = authClient.useSession()
   const user = session!.user
 
-  const { data: schedules, isLoading: isLoadingSchedules } =
-    useScheduleControllerUserScheduleList(user.id)
+  const {
+    schedules,
+    editingScheduleId,
+    setEditingScheduleId,
+    handleAddSchedule,
+    handleUpdateSchedule,
+    handleRemoveSchedule,
+  } = useScheduleList({ userId: user.id })
 
   const handleOpenEditScheduleDialog = (
-    schedule: SchedulesWithItemsDtoOutputItem
+    schedule: SchedulesWithItemsDtoItem
   ) => {
-    setEditingSchedule(schedule)
-    setIsOpenScheduleDailog(true)
+    setEditingScheduleId(schedule.id)
+    setIsOpenEditScheduleDailog(true)
   }
 
-  if (isLoadingSchedules) return <Spinner className="size-12" />
+  // if (isLoadingSchedules) return <Spinner className="size-12" />
 
   if (!schedules?.length) return "Не найдено расписаний"
 
   return (
     <>
+      <div>
+        <Button onClick={() => setIsOpenAddScheduleDailog(true)}>
+          <PlusIcon />
+        </Button>
+      </div>
       <ItemGroup className="gap-4">
         {schedules.map((s) => (
           <Item key={s.id}>
             <ItemContent>
               <ItemTitle>{s.name}</ItemTitle>
-              <ItemDescription>{}</ItemDescription>
+              <ItemDescription>{"Описание"}</ItemDescription>
             </ItemContent>
             <ItemActions>
               <Button
@@ -55,7 +70,10 @@ export function SchedulesList() {
               >
                 <Edit />
               </Button>
-              <Button variant="destructive">
+              <Button
+                variant="destructive"
+                onClick={() => handleRemoveSchedule(s.id)}
+              >
                 <Trash />
               </Button>
             </ItemActions>
@@ -63,11 +81,18 @@ export function SchedulesList() {
         ))}
       </ItemGroup>
 
-      {editingSchedule && (
+      <AddScheduleDialog
+        open={isOpenAddScheduleDialog}
+        onOpenChange={setIsOpenAddScheduleDailog}
+        onAddSchedule={handleAddSchedule}
+      />
+
+      {editingScheduleId && (
         <EditScheduleDialog
           open={isOpenEditScheduleDialog}
-          onOpenChange={setIsOpenScheduleDailog}
-          scheduleId={editingSchedule.id}
+          onOpenChange={setIsOpenEditScheduleDailog}
+          scheduleId={editingScheduleId}
+          onUpdateSchedule={handleUpdateSchedule}
         />
       )}
     </>

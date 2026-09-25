@@ -14,7 +14,6 @@ import type {
 } from 'msw';
 
 import type {
-  ScheduleDto,
   ScheduleWithItemsDto,
   SchedulesWithItemsDto
 } from '../../models';
@@ -29,7 +28,7 @@ import {
 export { getScheduleControllerCreateScheduleResponseMock, getScheduleControllerUserScheduleListResponseMock, getScheduleControllerGetScheduleResponseMock, getScheduleControllerUpdateScheduleResponseMock } from './schedule.faker';
 
 
-export const getScheduleControllerCreateScheduleMockHandler = (overrideResponse?: ScheduleDto | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ScheduleDto> | ScheduleDto), options?: RequestHandlerOptions) => {
+export const getScheduleControllerCreateScheduleMockHandler = (overrideResponse?: ScheduleWithItemsDto | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ScheduleWithItemsDto> | ScheduleWithItemsDto), options?: RequestHandlerOptions) => {
   return http.post('*/api/users/:userId/schedules', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
 
 

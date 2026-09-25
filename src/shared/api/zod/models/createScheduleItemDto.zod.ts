@@ -8,19 +8,23 @@
 import type { CreateScheduleItemDtoTime } from './createScheduleItemDtoTime.zod';
 import type { CreateScheduleItemDtoWeekDay } from './createScheduleItemDtoWeekDay.zod';
 
+/**
+ * Объект с данными для создания части расписания
+ */
 export interface CreateScheduleItemDto {
   weekDay: CreateScheduleItemDtoWeekDay;
   /**
+     * Строка времени в формате [HH:mm]
      * @deprecated
      * @pattern ^([01]\d|2[0-3]):([0-5]\d)$
      */
   startTime?: string;
   /**
+     * Строка времени в формате [HH:mm]
      * @deprecated
      * @pattern ^([01]\d|2[0-3]):([0-5]\d)$
      */
   endTime?: string;
-  /** Объект с временем начала и окончания в формате [HH, MM] */
   time: CreateScheduleItemDtoTime;
   /** @minLength 1 */
   text: string;

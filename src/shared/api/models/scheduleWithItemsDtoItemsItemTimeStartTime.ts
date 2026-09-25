@@ -6,6 +6,9 @@
  * OpenAPI spec version: 1.0
  */
 
+/**
+ * Объект с данными о времени
+ */
 export type ScheduleWithItemsDtoItemsItemTimeStartTime = {
   /**
      * @minimum 0
