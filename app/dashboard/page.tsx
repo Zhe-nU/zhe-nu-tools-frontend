@@ -1,5 +1,1 @@
-import { redirect } from "next/navigation"
-
-export default function Page() {
-  redirect("/dashboard/manage-bot")
-}
+export { DashboardPage as default } from "@pages/dashboard"
