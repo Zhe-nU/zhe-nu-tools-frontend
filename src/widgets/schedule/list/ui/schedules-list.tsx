@@ -30,6 +30,7 @@ export function SchedulesList() {
   const user = session!.user
 
   const {
+    isLoadingSchedules,
     schedules,
     editingScheduleId,
     setEditingScheduleId,
@@ -45,7 +46,7 @@ export function SchedulesList() {
     setIsOpenEditScheduleDailog(true)
   }
 
-  // if (isLoadingSchedules) return <Spinner className="size-12" />
+  if (isLoadingSchedules) return <Spinner className="size-12" />
 
   if (!schedules?.length) return "Не найдено расписаний"
 
@@ -57,11 +58,11 @@ export function SchedulesList() {
         </Button>
       </div>
       <ItemGroup className="gap-4">
-        {schedules.map((s) => (
+        {schedules?.map((s) => (
           <Item key={s.id}>
             <ItemContent>
               <ItemTitle>{s.name}</ItemTitle>
-              <ItemDescription>{"Описание"}</ItemDescription>
+              <ItemDescription>{s.description}</ItemDescription>
             </ItemContent>
             <ItemActions>
               <Button
