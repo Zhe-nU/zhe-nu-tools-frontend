@@ -149,7 +149,7 @@ export function SchedulePartItem({
         >
           <Trash2 />
         </Button>
-        <DropdownMenu>
+        {/* <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               type="button"
@@ -180,7 +180,7 @@ export function SchedulePartItem({
               <DropdownMenuItem>Все дни</DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu> */}
       </ItemActions>
     </Item>
   )
