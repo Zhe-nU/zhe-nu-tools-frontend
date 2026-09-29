@@ -1,4 +1,7 @@
-import { ScheduleWithItemsDto } from "@/shared/api/models"
+import {
+  BulkUpdateScheduleItemsDtoItemsItem,
+  ScheduleWithItemsDto,
+} from "@/shared/api/models"
 import { useForm } from "@tanstack/react-form"
 import { scheduleItemsSchema } from "./schedule-items.schema"
 import { useScheduleItemControllerDeleteScheduleItem } from "@/entities/schedule-item/api/schedule-item"
@@ -39,10 +42,14 @@ export function useScheduleItemsForm({ userId, schedule, items }: Props) {
         data: { items: value.items.filter((item) => !item.id) },
       })
 
+      const items: BulkUpdateScheduleItemsDtoItemsItem[] = value.items.filter(
+        (item): item is ScheduleItem & { id: string } => item.id !== undefined
+      )
+
       await bulkUpdateScheduleItems.mutateAsync({
         userId,
         scheduleId: schedule.id,
-        data: { items: value.items.filter((item) => item.id !== undefined) },
+        data: { items },
       })
     },
   })
