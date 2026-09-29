@@ -12,5 +12,6 @@ export interface ScheduleWithItemsDto {
   id: string;
   /** @minLength 1 */
   name: string;
+  description?: string | null;
   items: ScheduleWithItemsDtoItemsItem[];
 }

@@ -57,7 +57,127 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export const scheduleItemControllerCreateScheduleItem = (
+export const scheduleItemControllerBulkCreateScheduleItems = (
+    userId: string,
+    scheduleId: string,
+    bulkCreateScheduleItemsDto: BodyType<BulkCreateScheduleItemsDto>,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<ScheduleItemsDto>(
+      {url: `/api/users/${userId}/schedules/${scheduleId}/items/bulk`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: bulkCreateScheduleItemsDto, signal
+    },
+      options);
+    }
+
+
+
+
+export const getScheduleItemControllerBulkCreateScheduleItemsMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof scheduleItemControllerBulkCreateScheduleItems>>, TError,{userId: string;scheduleId: string;data: BodyType<BulkCreateScheduleItemsDto>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof scheduleItemControllerBulkCreateScheduleItems>>, TError,{userId: string;scheduleId: string;data: BodyType<BulkCreateScheduleItemsDto>}, TContext> => {
+
+const mutationKey = ['scheduleItemControllerBulkCreateScheduleItems'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof scheduleItemControllerBulkCreateScheduleItems>>, {userId: string;scheduleId: string;data: BodyType<BulkCreateScheduleItemsDto>}> = (props) => {
+          const {userId,scheduleId,data} = props ?? {};
+
+          return  scheduleItemControllerBulkCreateScheduleItems(userId,scheduleId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ScheduleItemControllerBulkCreateScheduleItemsMutationResult = NonNullable<Awaited<ReturnType<typeof scheduleItemControllerBulkCreateScheduleItems>>>
+    export type ScheduleItemControllerBulkCreateScheduleItemsMutationBody = BodyType<BulkCreateScheduleItemsDto>
+    export type ScheduleItemControllerBulkCreateScheduleItemsMutationError = ErrorType<void>
+
+    export const useScheduleItemControllerBulkCreateScheduleItems = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof scheduleItemControllerBulkCreateScheduleItems>>, TError,{userId: string;scheduleId: string;data: BodyType<BulkCreateScheduleItemsDto>}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof scheduleItemControllerBulkCreateScheduleItems>>,
+        TError,
+        {userId: string;scheduleId: string;data: BodyType<BulkCreateScheduleItemsDto>},
+        TContext
+      > => {
+      return useMutation(getScheduleItemControllerBulkCreateScheduleItemsMutationOptions(options), queryClient);
+    }
+    export const scheduleItemControllerBulkUpdateScheduleItems = (
+    userId: string,
+    scheduleId: string,
+    bulkUpdateScheduleItemsDto: BodyType<BulkUpdateScheduleItemsDto>,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<ScheduleItemsDto>(
+      {url: `/api/users/${userId}/schedules/${scheduleId}/items/bulk`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: bulkUpdateScheduleItemsDto, signal
+    },
+      options);
+    }
+
+
+
+
+export const getScheduleItemControllerBulkUpdateScheduleItemsMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof scheduleItemControllerBulkUpdateScheduleItems>>, TError,{userId: string;scheduleId: string;data: BodyType<BulkUpdateScheduleItemsDto>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof scheduleItemControllerBulkUpdateScheduleItems>>, TError,{userId: string;scheduleId: string;data: BodyType<BulkUpdateScheduleItemsDto>}, TContext> => {
+
+const mutationKey = ['scheduleItemControllerBulkUpdateScheduleItems'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof scheduleItemControllerBulkUpdateScheduleItems>>, {userId: string;scheduleId: string;data: BodyType<BulkUpdateScheduleItemsDto>}> = (props) => {
+          const {userId,scheduleId,data} = props ?? {};
+
+          return  scheduleItemControllerBulkUpdateScheduleItems(userId,scheduleId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ScheduleItemControllerBulkUpdateScheduleItemsMutationResult = NonNullable<Awaited<ReturnType<typeof scheduleItemControllerBulkUpdateScheduleItems>>>
+    export type ScheduleItemControllerBulkUpdateScheduleItemsMutationBody = BodyType<BulkUpdateScheduleItemsDto>
+    export type ScheduleItemControllerBulkUpdateScheduleItemsMutationError = ErrorType<void>
+
+    export const useScheduleItemControllerBulkUpdateScheduleItems = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof scheduleItemControllerBulkUpdateScheduleItems>>, TError,{userId: string;scheduleId: string;data: BodyType<BulkUpdateScheduleItemsDto>}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof scheduleItemControllerBulkUpdateScheduleItems>>,
+        TError,
+        {userId: string;scheduleId: string;data: BodyType<BulkUpdateScheduleItemsDto>},
+        TContext
+      > => {
+      return useMutation(getScheduleItemControllerBulkUpdateScheduleItemsMutationOptions(options), queryClient);
+    }
+    export const scheduleItemControllerCreateScheduleItem = (
     userId: string,
     scheduleId: string,
     createScheduleItemDto: BodyType<CreateScheduleItemDto>,
@@ -223,127 +343,7 @@ export const useGetScheduleItemControllerGetScheduleItemsQueryData = () => {
 }
 
 
-export const scheduleItemControllerBulkCreateScheduleItems = (
-    userId: string,
-    scheduleId: string,
-    bulkCreateScheduleItemsDto: BodyType<BulkCreateScheduleItemsDto>,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
-) => {
-
-
-      return customInstance<ScheduleItemsDto>(
-      {url: `/api/users/${userId}/schedules/${scheduleId}/items/bulk`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: bulkCreateScheduleItemsDto, signal
-    },
-      options);
-    }
-
-
-
-
-export const getScheduleItemControllerBulkCreateScheduleItemsMutationOptions = <TError = ErrorType<void>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof scheduleItemControllerBulkCreateScheduleItems>>, TError,{userId: string;scheduleId: string;data: BodyType<BulkCreateScheduleItemsDto>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof scheduleItemControllerBulkCreateScheduleItems>>, TError,{userId: string;scheduleId: string;data: BodyType<BulkCreateScheduleItemsDto>}, TContext> => {
-
-const mutationKey = ['scheduleItemControllerBulkCreateScheduleItems'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
-
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof scheduleItemControllerBulkCreateScheduleItems>>, {userId: string;scheduleId: string;data: BodyType<BulkCreateScheduleItemsDto>}> = (props) => {
-          const {userId,scheduleId,data} = props ?? {};
-
-          return  scheduleItemControllerBulkCreateScheduleItems(userId,scheduleId,data,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ScheduleItemControllerBulkCreateScheduleItemsMutationResult = NonNullable<Awaited<ReturnType<typeof scheduleItemControllerBulkCreateScheduleItems>>>
-    export type ScheduleItemControllerBulkCreateScheduleItemsMutationBody = BodyType<BulkCreateScheduleItemsDto>
-    export type ScheduleItemControllerBulkCreateScheduleItemsMutationError = ErrorType<void>
-
-    export const useScheduleItemControllerBulkCreateScheduleItems = <TError = ErrorType<void>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof scheduleItemControllerBulkCreateScheduleItems>>, TError,{userId: string;scheduleId: string;data: BodyType<BulkCreateScheduleItemsDto>}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof scheduleItemControllerBulkCreateScheduleItems>>,
-        TError,
-        {userId: string;scheduleId: string;data: BodyType<BulkCreateScheduleItemsDto>},
-        TContext
-      > => {
-      return useMutation(getScheduleItemControllerBulkCreateScheduleItemsMutationOptions(options), queryClient);
-    }
-    export const scheduleItemControllerBulkUpdateScheduleItems = (
-    userId: string,
-    scheduleId: string,
-    bulkUpdateScheduleItemsDto: BodyType<BulkUpdateScheduleItemsDto>,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
-) => {
-
-
-      return customInstance<ScheduleItemsDto>(
-      {url: `/api/users/${userId}/schedules/${scheduleId}/items/bulk`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: bulkUpdateScheduleItemsDto, signal
-    },
-      options);
-    }
-
-
-
-
-export const getScheduleItemControllerBulkUpdateScheduleItemsMutationOptions = <TError = ErrorType<void>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof scheduleItemControllerBulkUpdateScheduleItems>>, TError,{userId: string;scheduleId: string;data: BodyType<BulkUpdateScheduleItemsDto>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof scheduleItemControllerBulkUpdateScheduleItems>>, TError,{userId: string;scheduleId: string;data: BodyType<BulkUpdateScheduleItemsDto>}, TContext> => {
-
-const mutationKey = ['scheduleItemControllerBulkUpdateScheduleItems'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
-
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof scheduleItemControllerBulkUpdateScheduleItems>>, {userId: string;scheduleId: string;data: BodyType<BulkUpdateScheduleItemsDto>}> = (props) => {
-          const {userId,scheduleId,data} = props ?? {};
-
-          return  scheduleItemControllerBulkUpdateScheduleItems(userId,scheduleId,data,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ScheduleItemControllerBulkUpdateScheduleItemsMutationResult = NonNullable<Awaited<ReturnType<typeof scheduleItemControllerBulkUpdateScheduleItems>>>
-    export type ScheduleItemControllerBulkUpdateScheduleItemsMutationBody = BodyType<BulkUpdateScheduleItemsDto>
-    export type ScheduleItemControllerBulkUpdateScheduleItemsMutationError = ErrorType<void>
-
-    export const useScheduleItemControllerBulkUpdateScheduleItems = <TError = ErrorType<void>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof scheduleItemControllerBulkUpdateScheduleItems>>, TError,{userId: string;scheduleId: string;data: BodyType<BulkUpdateScheduleItemsDto>}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof scheduleItemControllerBulkUpdateScheduleItems>>,
-        TError,
-        {userId: string;scheduleId: string;data: BodyType<BulkUpdateScheduleItemsDto>},
-        TContext
-      > => {
-      return useMutation(getScheduleItemControllerBulkUpdateScheduleItemsMutationOptions(options), queryClient);
-    }
-    export const scheduleItemControllerGetScheduleItem = (
+export const scheduleItemControllerGetScheduleItem = (
     userId: string,
     scheduleId: string,
     itemId: string,

@@ -27,32 +27,8 @@ import {
   getScheduleItemControllerUpdateScheduleItemResponseMock
 } from './schedule-item.faker';
 
-export { getScheduleItemControllerCreateScheduleItemResponseMock, getScheduleItemControllerGetScheduleItemsResponseMock, getScheduleItemControllerBulkCreateScheduleItemsResponseMock, getScheduleItemControllerBulkUpdateScheduleItemsResponseMock, getScheduleItemControllerGetScheduleItemResponseMock, getScheduleItemControllerUpdateScheduleItemResponseMock } from './schedule-item.faker';
+export { getScheduleItemControllerBulkCreateScheduleItemsResponseMock, getScheduleItemControllerBulkUpdateScheduleItemsResponseMock, getScheduleItemControllerCreateScheduleItemResponseMock, getScheduleItemControllerGetScheduleItemsResponseMock, getScheduleItemControllerGetScheduleItemResponseMock, getScheduleItemControllerUpdateScheduleItemResponseMock } from './schedule-item.faker';
 
-
-export const getScheduleItemControllerCreateScheduleItemMockHandler = (overrideResponse?: ScheduleItemDto | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ScheduleItemDto> | ScheduleItemDto), options?: RequestHandlerOptions) => {
-  return http.post('*/api/users/:userId/schedules/:scheduleId/items', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
-
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getScheduleItemControllerCreateScheduleItemResponseMock(),
-      { status: 200
-      })
-  }, options)
-}
-
-export const getScheduleItemControllerGetScheduleItemsMockHandler = (overrideResponse?: ScheduleItemsDto | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ScheduleItemsDto> | ScheduleItemsDto), options?: RequestHandlerOptions) => {
-  return http.get('*/api/users/:userId/schedules/:scheduleId/items', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
-
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getScheduleItemControllerGetScheduleItemsResponseMock(),
-      { status: 200
-      })
-  }, options)
-}
 
 export const getScheduleItemControllerBulkCreateScheduleItemsMockHandler = (overrideResponse?: ScheduleItemsDto | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ScheduleItemsDto> | ScheduleItemsDto), options?: RequestHandlerOptions) => {
   return http.post('*/api/users/:userId/schedules/:scheduleId/items/bulk', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
@@ -73,6 +49,30 @@ export const getScheduleItemControllerBulkUpdateScheduleItemsMockHandler = (over
     return HttpResponse.json(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
     : getScheduleItemControllerBulkUpdateScheduleItemsResponseMock(),
+      { status: 200
+      })
+  }, options)
+}
+
+export const getScheduleItemControllerCreateScheduleItemMockHandler = (overrideResponse?: ScheduleItemDto | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ScheduleItemDto> | ScheduleItemDto), options?: RequestHandlerOptions) => {
+  return http.post('*/api/users/:userId/schedules/:scheduleId/items', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+
+
+    return HttpResponse.json(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getScheduleItemControllerCreateScheduleItemResponseMock(),
+      { status: 200
+      })
+  }, options)
+}
+
+export const getScheduleItemControllerGetScheduleItemsMockHandler = (overrideResponse?: ScheduleItemsDto | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ScheduleItemsDto> | ScheduleItemsDto), options?: RequestHandlerOptions) => {
+  return http.get('*/api/users/:userId/schedules/:scheduleId/items', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+
+
+    return HttpResponse.json(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getScheduleItemControllerGetScheduleItemsResponseMock(),
       { status: 200
       })
   }, options)
@@ -112,10 +112,10 @@ export const getScheduleItemControllerDeleteScheduleItemMockHandler = (overrideR
   }, options)
 }
 export const getScheduleItemMock = () => [
-  getScheduleItemControllerCreateScheduleItemMockHandler(),
-  getScheduleItemControllerGetScheduleItemsMockHandler(),
   getScheduleItemControllerBulkCreateScheduleItemsMockHandler(),
   getScheduleItemControllerBulkUpdateScheduleItemsMockHandler(),
+  getScheduleItemControllerCreateScheduleItemMockHandler(),
+  getScheduleItemControllerGetScheduleItemsMockHandler(),
   getScheduleItemControllerGetScheduleItemMockHandler(),
   getScheduleItemControllerUpdateScheduleItemMockHandler(),
   getScheduleItemControllerDeleteScheduleItemMockHandler()

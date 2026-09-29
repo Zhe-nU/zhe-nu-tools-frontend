@@ -12,5 +12,6 @@ export type SchedulesWithItemsDtoItem = {
   id: string;
   /** @minLength 1 */
   name: string;
+  description?: string | null;
   items: SchedulesWithItemsDtoItemItemsItem[];
 };

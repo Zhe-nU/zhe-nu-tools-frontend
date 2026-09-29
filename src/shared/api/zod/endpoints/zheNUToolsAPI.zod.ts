@@ -111,6 +111,7 @@ export const botControllerGetBotSchedulesResponseItemsItemTimeEndTimeMinutesMax 
 export const BotControllerGetBotSchedulesResponseItem = zod.object({
   "id": zod.uuid().regex(botControllerGetBotSchedulesResponseIdRegExp),
   "name": zod.string().min(1),
+  "description": zod.string().nullish(),
   "items": zod.array(zod.object({
   "id": zod.uuid().regex(botControllerGetBotSchedulesResponseItemsItemIdRegExp),
   "weekDay": zod.enum(['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']),
@@ -197,6 +198,7 @@ export const scheduleControllerCreateScheduleResponseItemsItemTimeEndTimeMinutes
 export const ScheduleControllerCreateScheduleResponse = zod.object({
   "id": zod.uuid().regex(scheduleControllerCreateScheduleResponseIdRegExp),
   "name": zod.string().min(1),
+  "description": zod.string().nullish(),
   "items": zod.array(zod.object({
   "id": zod.uuid().regex(scheduleControllerCreateScheduleResponseItemsItemIdRegExp),
   "weekDay": zod.enum(['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']),
@@ -244,6 +246,7 @@ export const scheduleControllerUserScheduleListResponseItemsItemTimeEndTimeMinut
 export const ScheduleControllerUserScheduleListResponseItem = zod.object({
   "id": zod.uuid().regex(scheduleControllerUserScheduleListResponseIdRegExp),
   "name": zod.string().min(1),
+  "description": zod.string().nullish(),
   "items": zod.array(zod.object({
   "id": zod.uuid().regex(scheduleControllerUserScheduleListResponseItemsItemIdRegExp),
   "weekDay": zod.enum(['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']),
@@ -293,6 +296,7 @@ export const scheduleControllerGetScheduleResponseItemsItemTimeEndTimeMinutesMax
 export const ScheduleControllerGetScheduleResponse = zod.object({
   "id": zod.uuid().regex(scheduleControllerGetScheduleResponseIdRegExp),
   "name": zod.string().min(1),
+  "description": zod.string().nullish(),
   "items": zod.array(zod.object({
   "id": zod.uuid().regex(scheduleControllerGetScheduleResponseItemsItemIdRegExp),
   "weekDay": zod.enum(['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']),
@@ -349,6 +353,7 @@ export const scheduleControllerUpdateScheduleResponseItemsItemTimeEndTimeMinutes
 export const ScheduleControllerUpdateScheduleResponse = zod.object({
   "id": zod.uuid().regex(scheduleControllerUpdateScheduleResponseIdRegExp),
   "name": zod.string().min(1),
+  "description": zod.string().nullish(),
   "items": zod.array(zod.object({
   "id": zod.uuid().regex(scheduleControllerUpdateScheduleResponseItemsItemIdRegExp),
   "weekDay": zod.enum(['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']),
@@ -375,125 +380,6 @@ export const ScheduleControllerDeleteScheduleParams = zod.object({
 })
 
 export const ScheduleControllerDeleteScheduleResponse = zod.void()
-
-
-export const ScheduleItemControllerCreateScheduleItemParams = zod.object({
-  "scheduleId": zod.uuid(),
-  "userId": zod.uuid()
-})
-
-export const scheduleItemControllerCreateScheduleItemBodyStartTimeRegExp = new RegExp('^([01]\\d|2[0-3]):([0-5]\\d)$');
-export const scheduleItemControllerCreateScheduleItemBodyEndTimeRegExp = new RegExp('^([01]\\d|2[0-3]):([0-5]\\d)$');
-export const scheduleItemControllerCreateScheduleItemBodyTimeStartTimeHoursMin = 0;
-export const scheduleItemControllerCreateScheduleItemBodyTimeStartTimeHoursMax = 23;
-
-export const scheduleItemControllerCreateScheduleItemBodyTimeStartTimeMinutesMin = 0;
-export const scheduleItemControllerCreateScheduleItemBodyTimeStartTimeMinutesMax = 59;
-
-export const scheduleItemControllerCreateScheduleItemBodyTimeEndTimeHoursMin = 0;
-export const scheduleItemControllerCreateScheduleItemBodyTimeEndTimeHoursMax = 23;
-
-export const scheduleItemControllerCreateScheduleItemBodyTimeEndTimeMinutesMin = 0;
-export const scheduleItemControllerCreateScheduleItemBodyTimeEndTimeMinutesMax = 59;
-
-
-
-
-export const ScheduleItemControllerCreateScheduleItemBody = zod.object({
-  "weekDay": zod.enum(['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']),
-  "startTime": zod.string().regex(scheduleItemControllerCreateScheduleItemBodyStartTimeRegExp).optional().describe('Строка времени в формате [HH:mm]'),
-  "endTime": zod.string().regex(scheduleItemControllerCreateScheduleItemBodyEndTimeRegExp).optional().describe('Строка времени в формате [HH:mm]'),
-  "time": zod.object({
-  "startTime": zod.object({
-  "hours": zod.int().min(scheduleItemControllerCreateScheduleItemBodyTimeStartTimeHoursMin).max(scheduleItemControllerCreateScheduleItemBodyTimeStartTimeHoursMax),
-  "minutes": zod.int().min(scheduleItemControllerCreateScheduleItemBodyTimeStartTimeMinutesMin).max(scheduleItemControllerCreateScheduleItemBodyTimeStartTimeMinutesMax)
-}).describe('Объект с данными о времени'),
-  "endTime": zod.object({
-  "hours": zod.int().min(scheduleItemControllerCreateScheduleItemBodyTimeEndTimeHoursMin).max(scheduleItemControllerCreateScheduleItemBodyTimeEndTimeHoursMax),
-  "minutes": zod.int().min(scheduleItemControllerCreateScheduleItemBodyTimeEndTimeMinutesMin).max(scheduleItemControllerCreateScheduleItemBodyTimeEndTimeMinutesMax)
-}).describe('Объект с данными о времени')
-}),
-  "text": zod.string().min(1)
-}).describe('Объект с данными для создания части расписания')
-
-export const scheduleItemControllerCreateScheduleItemResponseIdRegExp = new RegExp('^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$');
-export const scheduleItemControllerCreateScheduleItemResponseStartTimeRegExp = new RegExp('^([01]\\d|2[0-3]):([0-5]\\d)$');
-export const scheduleItemControllerCreateScheduleItemResponseEndTimeRegExp = new RegExp('^([01]\\d|2[0-3]):([0-5]\\d)$');
-export const scheduleItemControllerCreateScheduleItemResponseTimeStartTimeHoursMin = 0;
-export const scheduleItemControllerCreateScheduleItemResponseTimeStartTimeHoursMax = 23;
-
-export const scheduleItemControllerCreateScheduleItemResponseTimeStartTimeMinutesMin = 0;
-export const scheduleItemControllerCreateScheduleItemResponseTimeStartTimeMinutesMax = 59;
-
-export const scheduleItemControllerCreateScheduleItemResponseTimeEndTimeHoursMin = 0;
-export const scheduleItemControllerCreateScheduleItemResponseTimeEndTimeHoursMax = 23;
-
-export const scheduleItemControllerCreateScheduleItemResponseTimeEndTimeMinutesMin = 0;
-export const scheduleItemControllerCreateScheduleItemResponseTimeEndTimeMinutesMax = 59;
-
-
-
-
-export const ScheduleItemControllerCreateScheduleItemResponse = zod.object({
-  "id": zod.uuid().regex(scheduleItemControllerCreateScheduleItemResponseIdRegExp),
-  "weekDay": zod.enum(['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']),
-  "startTime": zod.string().regex(scheduleItemControllerCreateScheduleItemResponseStartTimeRegExp).optional().describe('Строка времени в формате [HH:mm]'),
-  "endTime": zod.string().regex(scheduleItemControllerCreateScheduleItemResponseEndTimeRegExp).optional().describe('Строка времени в формате [HH:mm]'),
-  "time": zod.object({
-  "startTime": zod.object({
-  "hours": zod.int().min(scheduleItemControllerCreateScheduleItemResponseTimeStartTimeHoursMin).max(scheduleItemControllerCreateScheduleItemResponseTimeStartTimeHoursMax),
-  "minutes": zod.int().min(scheduleItemControllerCreateScheduleItemResponseTimeStartTimeMinutesMin).max(scheduleItemControllerCreateScheduleItemResponseTimeStartTimeMinutesMax)
-}).describe('Объект с данными о времени'),
-  "endTime": zod.object({
-  "hours": zod.int().min(scheduleItemControllerCreateScheduleItemResponseTimeEndTimeHoursMin).max(scheduleItemControllerCreateScheduleItemResponseTimeEndTimeHoursMax),
-  "minutes": zod.int().min(scheduleItemControllerCreateScheduleItemResponseTimeEndTimeMinutesMin).max(scheduleItemControllerCreateScheduleItemResponseTimeEndTimeMinutesMax)
-}).describe('Объект с данными о времени')
-}),
-  "text": zod.string().min(1)
-})
-
-
-export const ScheduleItemControllerGetScheduleItemsParams = zod.object({
-  "scheduleId": zod.uuid(),
-  "userId": zod.uuid()
-})
-
-export const scheduleItemControllerGetScheduleItemsResponseIdRegExp = new RegExp('^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$');
-export const scheduleItemControllerGetScheduleItemsResponseStartTimeRegExp = new RegExp('^([01]\\d|2[0-3]):([0-5]\\d)$');
-export const scheduleItemControllerGetScheduleItemsResponseEndTimeRegExp = new RegExp('^([01]\\d|2[0-3]):([0-5]\\d)$');
-export const scheduleItemControllerGetScheduleItemsResponseTimeStartTimeHoursMin = 0;
-export const scheduleItemControllerGetScheduleItemsResponseTimeStartTimeHoursMax = 23;
-
-export const scheduleItemControllerGetScheduleItemsResponseTimeStartTimeMinutesMin = 0;
-export const scheduleItemControllerGetScheduleItemsResponseTimeStartTimeMinutesMax = 59;
-
-export const scheduleItemControllerGetScheduleItemsResponseTimeEndTimeHoursMin = 0;
-export const scheduleItemControllerGetScheduleItemsResponseTimeEndTimeHoursMax = 23;
-
-export const scheduleItemControllerGetScheduleItemsResponseTimeEndTimeMinutesMin = 0;
-export const scheduleItemControllerGetScheduleItemsResponseTimeEndTimeMinutesMax = 59;
-
-
-
-
-export const ScheduleItemControllerGetScheduleItemsResponseItem = zod.object({
-  "id": zod.uuid().regex(scheduleItemControllerGetScheduleItemsResponseIdRegExp),
-  "weekDay": zod.enum(['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']),
-  "startTime": zod.string().regex(scheduleItemControllerGetScheduleItemsResponseStartTimeRegExp).optional().describe('Строка времени в формате [HH:mm]'),
-  "endTime": zod.string().regex(scheduleItemControllerGetScheduleItemsResponseEndTimeRegExp).optional().describe('Строка времени в формате [HH:mm]'),
-  "time": zod.object({
-  "startTime": zod.object({
-  "hours": zod.int().min(scheduleItemControllerGetScheduleItemsResponseTimeStartTimeHoursMin).max(scheduleItemControllerGetScheduleItemsResponseTimeStartTimeHoursMax),
-  "minutes": zod.int().min(scheduleItemControllerGetScheduleItemsResponseTimeStartTimeMinutesMin).max(scheduleItemControllerGetScheduleItemsResponseTimeStartTimeMinutesMax)
-}).describe('Объект с данными о времени'),
-  "endTime": zod.object({
-  "hours": zod.int().min(scheduleItemControllerGetScheduleItemsResponseTimeEndTimeHoursMin).max(scheduleItemControllerGetScheduleItemsResponseTimeEndTimeHoursMax),
-  "minutes": zod.int().min(scheduleItemControllerGetScheduleItemsResponseTimeEndTimeMinutesMin).max(scheduleItemControllerGetScheduleItemsResponseTimeEndTimeMinutesMax)
-}).describe('Объект с данными о времени')
-}),
-  "text": zod.string().min(1)
-})
-export const ScheduleItemControllerGetScheduleItemsResponse = zod.array(ScheduleItemControllerGetScheduleItemsResponseItem)
 
 
 export const ScheduleItemControllerBulkCreateScheduleItemsParams = zod.object({
@@ -654,6 +540,125 @@ export const ScheduleItemControllerBulkUpdateScheduleItemsResponseItem = zod.obj
   "text": zod.string().min(1)
 })
 export const ScheduleItemControllerBulkUpdateScheduleItemsResponse = zod.array(ScheduleItemControllerBulkUpdateScheduleItemsResponseItem)
+
+
+export const ScheduleItemControllerCreateScheduleItemParams = zod.object({
+  "scheduleId": zod.uuid(),
+  "userId": zod.uuid()
+})
+
+export const scheduleItemControllerCreateScheduleItemBodyStartTimeRegExp = new RegExp('^([01]\\d|2[0-3]):([0-5]\\d)$');
+export const scheduleItemControllerCreateScheduleItemBodyEndTimeRegExp = new RegExp('^([01]\\d|2[0-3]):([0-5]\\d)$');
+export const scheduleItemControllerCreateScheduleItemBodyTimeStartTimeHoursMin = 0;
+export const scheduleItemControllerCreateScheduleItemBodyTimeStartTimeHoursMax = 23;
+
+export const scheduleItemControllerCreateScheduleItemBodyTimeStartTimeMinutesMin = 0;
+export const scheduleItemControllerCreateScheduleItemBodyTimeStartTimeMinutesMax = 59;
+
+export const scheduleItemControllerCreateScheduleItemBodyTimeEndTimeHoursMin = 0;
+export const scheduleItemControllerCreateScheduleItemBodyTimeEndTimeHoursMax = 23;
+
+export const scheduleItemControllerCreateScheduleItemBodyTimeEndTimeMinutesMin = 0;
+export const scheduleItemControllerCreateScheduleItemBodyTimeEndTimeMinutesMax = 59;
+
+
+
+
+export const ScheduleItemControllerCreateScheduleItemBody = zod.object({
+  "weekDay": zod.enum(['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']),
+  "startTime": zod.string().regex(scheduleItemControllerCreateScheduleItemBodyStartTimeRegExp).optional().describe('Строка времени в формате [HH:mm]'),
+  "endTime": zod.string().regex(scheduleItemControllerCreateScheduleItemBodyEndTimeRegExp).optional().describe('Строка времени в формате [HH:mm]'),
+  "time": zod.object({
+  "startTime": zod.object({
+  "hours": zod.int().min(scheduleItemControllerCreateScheduleItemBodyTimeStartTimeHoursMin).max(scheduleItemControllerCreateScheduleItemBodyTimeStartTimeHoursMax),
+  "minutes": zod.int().min(scheduleItemControllerCreateScheduleItemBodyTimeStartTimeMinutesMin).max(scheduleItemControllerCreateScheduleItemBodyTimeStartTimeMinutesMax)
+}).describe('Объект с данными о времени'),
+  "endTime": zod.object({
+  "hours": zod.int().min(scheduleItemControllerCreateScheduleItemBodyTimeEndTimeHoursMin).max(scheduleItemControllerCreateScheduleItemBodyTimeEndTimeHoursMax),
+  "minutes": zod.int().min(scheduleItemControllerCreateScheduleItemBodyTimeEndTimeMinutesMin).max(scheduleItemControllerCreateScheduleItemBodyTimeEndTimeMinutesMax)
+}).describe('Объект с данными о времени')
+}),
+  "text": zod.string().min(1)
+}).describe('Объект с данными для создания части расписания')
+
+export const scheduleItemControllerCreateScheduleItemResponseIdRegExp = new RegExp('^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$');
+export const scheduleItemControllerCreateScheduleItemResponseStartTimeRegExp = new RegExp('^([01]\\d|2[0-3]):([0-5]\\d)$');
+export const scheduleItemControllerCreateScheduleItemResponseEndTimeRegExp = new RegExp('^([01]\\d|2[0-3]):([0-5]\\d)$');
+export const scheduleItemControllerCreateScheduleItemResponseTimeStartTimeHoursMin = 0;
+export const scheduleItemControllerCreateScheduleItemResponseTimeStartTimeHoursMax = 23;
+
+export const scheduleItemControllerCreateScheduleItemResponseTimeStartTimeMinutesMin = 0;
+export const scheduleItemControllerCreateScheduleItemResponseTimeStartTimeMinutesMax = 59;
+
+export const scheduleItemControllerCreateScheduleItemResponseTimeEndTimeHoursMin = 0;
+export const scheduleItemControllerCreateScheduleItemResponseTimeEndTimeHoursMax = 23;
+
+export const scheduleItemControllerCreateScheduleItemResponseTimeEndTimeMinutesMin = 0;
+export const scheduleItemControllerCreateScheduleItemResponseTimeEndTimeMinutesMax = 59;
+
+
+
+
+export const ScheduleItemControllerCreateScheduleItemResponse = zod.object({
+  "id": zod.uuid().regex(scheduleItemControllerCreateScheduleItemResponseIdRegExp),
+  "weekDay": zod.enum(['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']),
+  "startTime": zod.string().regex(scheduleItemControllerCreateScheduleItemResponseStartTimeRegExp).optional().describe('Строка времени в формате [HH:mm]'),
+  "endTime": zod.string().regex(scheduleItemControllerCreateScheduleItemResponseEndTimeRegExp).optional().describe('Строка времени в формате [HH:mm]'),
+  "time": zod.object({
+  "startTime": zod.object({
+  "hours": zod.int().min(scheduleItemControllerCreateScheduleItemResponseTimeStartTimeHoursMin).max(scheduleItemControllerCreateScheduleItemResponseTimeStartTimeHoursMax),
+  "minutes": zod.int().min(scheduleItemControllerCreateScheduleItemResponseTimeStartTimeMinutesMin).max(scheduleItemControllerCreateScheduleItemResponseTimeStartTimeMinutesMax)
+}).describe('Объект с данными о времени'),
+  "endTime": zod.object({
+  "hours": zod.int().min(scheduleItemControllerCreateScheduleItemResponseTimeEndTimeHoursMin).max(scheduleItemControllerCreateScheduleItemResponseTimeEndTimeHoursMax),
+  "minutes": zod.int().min(scheduleItemControllerCreateScheduleItemResponseTimeEndTimeMinutesMin).max(scheduleItemControllerCreateScheduleItemResponseTimeEndTimeMinutesMax)
+}).describe('Объект с данными о времени')
+}),
+  "text": zod.string().min(1)
+})
+
+
+export const ScheduleItemControllerGetScheduleItemsParams = zod.object({
+  "scheduleId": zod.uuid(),
+  "userId": zod.uuid()
+})
+
+export const scheduleItemControllerGetScheduleItemsResponseIdRegExp = new RegExp('^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$');
+export const scheduleItemControllerGetScheduleItemsResponseStartTimeRegExp = new RegExp('^([01]\\d|2[0-3]):([0-5]\\d)$');
+export const scheduleItemControllerGetScheduleItemsResponseEndTimeRegExp = new RegExp('^([01]\\d|2[0-3]):([0-5]\\d)$');
+export const scheduleItemControllerGetScheduleItemsResponseTimeStartTimeHoursMin = 0;
+export const scheduleItemControllerGetScheduleItemsResponseTimeStartTimeHoursMax = 23;
+
+export const scheduleItemControllerGetScheduleItemsResponseTimeStartTimeMinutesMin = 0;
+export const scheduleItemControllerGetScheduleItemsResponseTimeStartTimeMinutesMax = 59;
+
+export const scheduleItemControllerGetScheduleItemsResponseTimeEndTimeHoursMin = 0;
+export const scheduleItemControllerGetScheduleItemsResponseTimeEndTimeHoursMax = 23;
+
+export const scheduleItemControllerGetScheduleItemsResponseTimeEndTimeMinutesMin = 0;
+export const scheduleItemControllerGetScheduleItemsResponseTimeEndTimeMinutesMax = 59;
+
+
+
+
+export const ScheduleItemControllerGetScheduleItemsResponseItem = zod.object({
+  "id": zod.uuid().regex(scheduleItemControllerGetScheduleItemsResponseIdRegExp),
+  "weekDay": zod.enum(['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']),
+  "startTime": zod.string().regex(scheduleItemControllerGetScheduleItemsResponseStartTimeRegExp).optional().describe('Строка времени в формате [HH:mm]'),
+  "endTime": zod.string().regex(scheduleItemControllerGetScheduleItemsResponseEndTimeRegExp).optional().describe('Строка времени в формате [HH:mm]'),
+  "time": zod.object({
+  "startTime": zod.object({
+  "hours": zod.int().min(scheduleItemControllerGetScheduleItemsResponseTimeStartTimeHoursMin).max(scheduleItemControllerGetScheduleItemsResponseTimeStartTimeHoursMax),
+  "minutes": zod.int().min(scheduleItemControllerGetScheduleItemsResponseTimeStartTimeMinutesMin).max(scheduleItemControllerGetScheduleItemsResponseTimeStartTimeMinutesMax)
+}).describe('Объект с данными о времени'),
+  "endTime": zod.object({
+  "hours": zod.int().min(scheduleItemControllerGetScheduleItemsResponseTimeEndTimeHoursMin).max(scheduleItemControllerGetScheduleItemsResponseTimeEndTimeHoursMax),
+  "minutes": zod.int().min(scheduleItemControllerGetScheduleItemsResponseTimeEndTimeMinutesMin).max(scheduleItemControllerGetScheduleItemsResponseTimeEndTimeMinutesMax)
+}).describe('Объект с данными о времени')
+}),
+  "text": zod.string().min(1)
+})
+export const ScheduleItemControllerGetScheduleItemsResponse = zod.array(ScheduleItemControllerGetScheduleItemsResponseItem)
 
 
 export const ScheduleItemControllerGetScheduleItemParams = zod.object({
