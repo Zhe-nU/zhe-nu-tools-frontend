@@ -1,6 +1,7 @@
 import {
   useScheduleControllerDeleteSchedule,
   useScheduleControllerUserScheduleList,
+  useSetScheduleControllerGetScheduleQueryData,
   useSetScheduleControllerUserScheduleListQueryData,
 } from "@/shared/api/endpoints/schedule/schedule"
 import {
@@ -20,6 +21,7 @@ export function useScheduleList({ userId }: Params) {
   const { data: schedules, isLoading: isLoadingSchedules } =
     useScheduleControllerUserScheduleList(userId)
 
+  const updateSchedule = useSetScheduleControllerGetScheduleQueryData()
   const updateScheduleList = useSetScheduleControllerUserScheduleListQueryData()
 
   const removeSchedule = useScheduleControllerDeleteSchedule()
@@ -32,6 +34,7 @@ export function useScheduleList({ userId }: Params) {
     id: string,
     newSchedule: ScheduleWithItemsDto
   ) => {
+    updateSchedule(userId, id, newSchedule)
     updateScheduleList(userId, (old) =>
       old?.map((s) => (s.id === id ? newSchedule : s))
     )
@@ -43,6 +46,7 @@ export function useScheduleList({ userId }: Params) {
   }
 
   return {
+    isLoadingSchedules,
     editingScheduleId,
     setEditingScheduleId,
     handleAddSchedule,
