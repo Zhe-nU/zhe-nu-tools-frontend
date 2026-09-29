@@ -1,5 +1,6 @@
 "use client"
 
+import { usePathname } from "next/navigation"
 import { SearchForm } from "@shared/search-form"
 import {
   Breadcrumb,
@@ -14,8 +15,26 @@ import { Separator } from "@shared/ui/separator"
 import { useSidebar } from "@shared/ui/sidebar"
 import { PanelLeftIcon } from "lucide-react"
 
+const pageTitles: Record<string, string> = {
+  "/dashboard": "Панель управления",
+  "/dashboard/bots": "Управление ботом",
+  "/dashboard/schedules": "Расписания",
+  "/dashboard/admin": "Администрирование",
+  "/dashboard/profile": "Профиль",
+}
+
+function getPageTitle(pathname: string): string {
+  const exact = pageTitles[pathname]
+  if (exact) return exact
+
+  if (pathname.startsWith("/dashboard/bots/")) return "Бот"
+  return "Панель управления"
+}
+
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar()
+  const pathname = usePathname()
+  const pageTitle = getPageTitle(pathname || '')
 
   return (
     <header className="sticky top-0 z-50 flex w-full items-center border-b bg-background">
@@ -39,7 +58,7 @@ export function SiteHeader() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Управление ботом</BreadcrumbPage>
+              <BreadcrumbPage>{pageTitle}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
