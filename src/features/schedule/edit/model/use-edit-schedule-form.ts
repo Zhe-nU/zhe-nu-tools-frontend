@@ -21,6 +21,7 @@ export function useEditScheduleForm({
   const form = useForm({
     defaultValues: {
       name: schedule.name,
+      description: schedule.description || undefined,
     },
     validators: {
       onSubmit: editScheduleFormSchema,

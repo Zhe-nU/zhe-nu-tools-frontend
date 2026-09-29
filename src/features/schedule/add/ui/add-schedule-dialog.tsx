@@ -37,6 +37,7 @@ export function AddScheduleDialog({
 
   const defaultValues: z.input<typeof formSchema> = {
     name: "",
+    description: "",
   }
 
   const form = useForm({
@@ -82,7 +83,7 @@ export function AddScheduleDialog({
 
             <TextField
               form={form}
-              name="name"
+              name="description"
               label="Описание"
               placeholder="Описание"
             />

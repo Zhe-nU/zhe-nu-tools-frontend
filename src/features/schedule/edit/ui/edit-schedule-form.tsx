@@ -1,18 +1,9 @@
-import {
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/shared/ui/dialog"
 import { Field, FieldGroup, FieldSeparator, FieldSet } from "@/shared/ui/field"
 import { TextField } from "@/shared/ui/form/text-field"
 import { useEditScheduleForm } from "../model/use-edit-schedule-form"
 import { ScheduleWithItemsDto } from "@/entities/schedule"
 import { ScheduleItemsTabs } from "./schedule-items-tabs"
 import { Button } from "@/shared/ui/button"
-import { useScheduleItemsForm } from "../model/use-schedule-items-form"
 
 type Props = {
   userId: string
@@ -50,7 +41,7 @@ export function EditScheduleForm({
 
           <TextField
             form={editScheduleForm}
-            name="name"
+            name="description"
             label="Описание"
             placeholder="Описание"
           />
