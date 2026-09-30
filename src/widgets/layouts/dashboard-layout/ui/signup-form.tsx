@@ -21,7 +21,7 @@ import { useForm } from "@tanstack/react-form"
 import { useMutation } from "@tanstack/react-query"
 import { redirect } from "next/navigation"
 import z from "zod"
-import { Spinner } from "./ui/spinner"
+import { Spinner } from "@/shared/ui/spinner"
 
 const formSchema = z
   .object({

@@ -1,7 +1,6 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { SearchForm } from "@shared/search-form"
 import {
   Breadcrumb,
   BreadcrumbItem,
