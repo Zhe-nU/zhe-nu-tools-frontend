@@ -1,24 +1,30 @@
-import {
-  BulkUpdateScheduleItemsDtoItemsItem,
-  ScheduleWithItemsDto,
-} from "@/shared/api/models"
+import { BulkUpdateScheduleItemsDtoItemsItem } from "@/shared/api/models"
 import { useForm } from "@tanstack/react-form"
-import { scheduleItemsSchema } from "./schedule-items.schema"
+import {
+  scheduleItemsSchema,
+  ScheduleItemsValues,
+} from "./schedule-items.schema"
 import { useScheduleItemControllerDeleteScheduleItem } from "@/entities/schedule-item/api/schedule-item"
 import { WeekDays } from "@/shared/lib/constants/weekDays"
 import {
   useScheduleItemControllerBulkCreateScheduleItems,
   useScheduleItemControllerBulkUpdateScheduleItems,
+  useScheduleItemControllerGetScheduleItems,
+  useSetScheduleItemControllerGetScheduleItemsQueryData,
 } from "@/shared/api/endpoints/schedule-item/schedule-item"
 import { ScheduleItem } from "./types"
 
 type Props = {
   userId: string
-  schedule: ScheduleWithItemsDto
-  items: ScheduleItem[]
+  scheduleId: string
 }
 
-export function useScheduleItemsForm({ userId, schedule, items }: Props) {
+export function useScheduleItemsForm({ userId, scheduleId }: Props) {
+  const { data: items = [] } = useScheduleItemControllerGetScheduleItems(
+    userId,
+    scheduleId
+  )
+
   const bulkCreateScheduleItems =
     useScheduleItemControllerBulkCreateScheduleItems()
 
@@ -27,18 +33,21 @@ export function useScheduleItemsForm({ userId, schedule, items }: Props) {
 
   const removeScheduleItem = useScheduleItemControllerDeleteScheduleItem()
 
+  const updateScheduleItemList =
+    useSetScheduleItemControllerGetScheduleItemsQueryData()
+
   const form = useForm({
     defaultValues: {
-      items,
-    },
+      items: items,
+    } satisfies ScheduleItemsValues as ScheduleItemsValues,
     validators: {
       onChange: scheduleItemsSchema,
       onSubmit: scheduleItemsSchema,
     },
     onSubmit: async ({ value }) => {
-      await bulkCreateScheduleItems.mutateAsync({
+      const newItems = await bulkCreateScheduleItems.mutateAsync({
         userId,
-        scheduleId: schedule.id,
+        scheduleId: scheduleId,
         data: { items: value.items.filter((item) => !item.id) },
       })
 
@@ -46,11 +55,17 @@ export function useScheduleItemsForm({ userId, schedule, items }: Props) {
         (item): item is ScheduleItem & { id: string } => item.id !== undefined
       )
 
-      await bulkUpdateScheduleItems.mutateAsync({
+      const updatedItems = await bulkUpdateScheduleItems.mutateAsync({
         userId,
-        scheduleId: schedule.id,
+        scheduleId: scheduleId,
         data: { items },
       })
+
+      updateScheduleItemList(userId, scheduleId, () =>
+        [...newItems, ...updatedItems].sort(
+          (a, b) => a.time.startTime.hours - b.time.startTime.hours
+        )
+      )
     },
   })
 
@@ -79,7 +94,7 @@ export function useScheduleItemsForm({ userId, schedule, items }: Props) {
     if (item.id)
       await removeScheduleItem.mutateAsync({
         userId,
-        scheduleId: schedule.id,
+        scheduleId: scheduleId,
         itemId: item.id,
       })
 
@@ -87,7 +102,7 @@ export function useScheduleItemsForm({ userId, schedule, items }: Props) {
     form.validateField("items", "submit")
   }
 
-  return { form, addItem, copyItem, deleteItem }
+  return { form, items, addItem, copyItem, deleteItem }
 }
 
 export type ScheduleItemsFormApi = ReturnType<
