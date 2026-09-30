@@ -3,16 +3,8 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/shared/ui/field"
 import { Input } from "@/shared/ui/input"
 import { Item, ItemActions, ItemContent } from "@/shared/ui/item"
 import { Textarea } from "@/shared/ui/textarea"
-import { CopyIcon, Trash2 } from "lucide-react"
+import { Trash2 } from "lucide-react"
 import dayjs from "dayjs"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/shared/ui/dropdown-menu"
 import { WeekDays } from "@/shared/lib/constants/weekDays"
 import { ScheduleItemsFormApi } from "../model/use-schedule-items-form"
 

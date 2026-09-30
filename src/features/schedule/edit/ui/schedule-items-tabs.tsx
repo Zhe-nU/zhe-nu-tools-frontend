@@ -13,7 +13,7 @@ type Props = {
   items: ScheduleWithItemsDto["items"]
 }
 
-export function ScheduleItemsTabs({ userId, schedule, items }: Props) {
+export function ScheduleItemsTabs({ userId, schedule }: Props) {
   const {
     form: scheduleItemsForm,
     addItem,
@@ -21,8 +21,7 @@ export function ScheduleItemsTabs({ userId, schedule, items }: Props) {
     deleteItem,
   } = useScheduleItemsForm({
     userId,
-    schedule,
-    items,
+    scheduleId: schedule.id,
   })
 
   return (
