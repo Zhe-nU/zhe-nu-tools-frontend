@@ -1,11 +1,1 @@
-import { AccountSection } from "./ui/account-section"
-import { SecuritySection } from "./ui/security-section"
-
-export default function Page() {
-  return (
-    <>
-      <AccountSection />
-      <SecuritySection />
-    </>
-  )
-}
+export { DashboardProfilePage as default } from "@pages/dashboard-profile"

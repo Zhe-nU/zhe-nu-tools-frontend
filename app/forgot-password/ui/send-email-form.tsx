@@ -1,21 +1,10 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { authClient } from "@/lib/auth-client"
+import { authClient } from "@/shared/api/auth-client"
+import { Button } from "@/shared/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card"
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/shared/ui/field"
+import { Input } from "@/shared/ui/input"
 import { useForm } from "@tanstack/react-form"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"

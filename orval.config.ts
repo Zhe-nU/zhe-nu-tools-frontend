@@ -8,14 +8,15 @@ export default defineConfig({
     output: {
       clean: true,
       mode: "tags-split",
-      target: "app/client/endpoints",
-      schemas: "app/client/models",
+      target: "./src/shared/api/endpoints",
+      schemas: "./src/shared/api/models",
       client: "react-query",
       httpClient: "axios",
       mock: true,
       override: {
+        query: { useGetQueryData: true, useSetQueryData: true },
         mutator: {
-          path: "./shared/api/client.ts",
+          path: "./src/shared/api/client.ts",
           name: "customInstance",
         },
       },
@@ -28,8 +29,8 @@ export default defineConfig({
     output: {
       mode: "split",
       client: "zod",
-      target: "app/client/zod/endpoints",
-      schemas: "app/client/zod/models",
+      target: "./src/shared/api/zod/endpoints",
+      schemas: "./src/shared/api/zod/models",
       fileExtension: ".zod.ts",
     },
   },

@@ -1,5 +1,5 @@
 import { use } from "react"
-import { ResetPasswordForm } from "./ui/reset-password-form"
+import { ResetPasswordForm } from "@features/auth/reset-password-form"
 
 export default function Page({
   searchParams,
